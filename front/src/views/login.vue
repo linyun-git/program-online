@@ -45,7 +45,10 @@ export default {
 <style lang="less" scoped>
 .box-card {
   width: 480px;
-  margin: 10% auto 0;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 </style>
 

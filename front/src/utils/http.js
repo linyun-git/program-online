@@ -1,7 +1,8 @@
 import axios from 'axios'
+import networkConfig from '@/api/config'
 
 const instance = axios.create({
-  baseURL: 'http://localhost',
+  baseURL: networkConfig.baseURL,
   timeout: 5000
 })
 
