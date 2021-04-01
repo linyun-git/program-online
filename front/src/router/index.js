@@ -1,19 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '',
+    name: 'layout',
+    component: () => import('@/views/layout'),
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/home'),
+        name: 'home',
+        meta: {
+          // 匹配规则
+          name: '首页',
+          title: '',
+          icon: 'icon-name'
+        }
+      }
+    ]
   },
   {
     path: '/login',
-    component: () => import('../views/login')
+    component: () => import('@/views/login')
   },
   {
     path: '/page-not-found',
-    component: () => import('../views/page-not-found')
+    component: () => import('@/views/error-page/page-not-found')
   },
   {
     path: '/:pathMatch(.*)*',
