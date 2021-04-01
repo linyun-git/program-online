@@ -16,6 +16,17 @@ const routes = [
           title: '',
           icon: 'icon-name'
         }
+      },
+      {
+        path: 'search',
+        component: () => import('@/views/search'),
+        name: 'home',
+        meta: {
+          // 匹配规则
+          name: '搜索',
+          title: '',
+          icon: 'icon-name'
+        }
       }
     ]
   },
