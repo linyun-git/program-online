@@ -12,11 +12,10 @@
 </template>
 
 <script>
-import LoginForm from '../components/login-form'
-import RegisterForm from '../components/register-form'
+import LoginForm from './components/login-form'
+import RegisterForm from './components/register-form'
 
 export default {
-  name: 'login',
   components: {
     LoginForm,
     RegisterForm
@@ -36,7 +35,14 @@ export default {
   },
   methods: {
     submit (value) {
-      console.log(value)
+      this.$api.user.login(value)
+        .then(rep => {
+          this.$message.success('这里是成功了的消息')
+          this.$router.push('/')
+        })
+        .catch(error => {
+          this.$message.error('登录失败：' + error)
+        })
     }
   }
 }

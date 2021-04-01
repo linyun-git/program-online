@@ -15,6 +15,12 @@ export default {
         url: '/register',
         method: 'post'
       }
+    },
+    workspace: {
+      list: {
+        url: '',
+        method: 'post'
+      }
     }
   }
 }

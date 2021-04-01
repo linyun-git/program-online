@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img alt="Vue logo" src="~@/assets/logo.png">
     <el-button plain @click="$router.push('/login')">去登录</el-button>
     <el-button plain @click="load">Loading</el-button>
     <el-button plain @click="success">Success</el-button>
@@ -11,10 +11,9 @@
 </template>
 
 <script>
-import message from '../utils/message'
+import message from '@/utils/message'
 
 export default {
-  name: 'Home',
   data () {
     return {
       loading: null
