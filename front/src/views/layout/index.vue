@@ -5,10 +5,12 @@
     <el-header class="header-body">
       <layout-header class="header"></layout-header>
     </el-header>
-    <el-main>
-      <div style="max-width: 1200px;margin: 0 auto">
-        <router-view></router-view>
-      </div>
+    <el-main class="el-main">
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component"/>
+        </keep-alive>
+      </router-view>
     </el-main>
   </el-container>
 </template>
@@ -27,8 +29,9 @@ export default {
 <style lang="less" scoped>
 .header-body {
   background-color: #fff;
-  border-bottom: 1px solid #dcdfe6;
+  border-bottom: 1px solid #DCDFE6;
   position: fixed;
+  z-index: 1;
   width: 100%;
   top: 0;
   left: 0;
@@ -37,5 +40,9 @@ export default {
     max-width: 1200px;
     margin: 0 auto;
   }
+}
+
+.el-main {
+  padding: 0;
 }
 </style>

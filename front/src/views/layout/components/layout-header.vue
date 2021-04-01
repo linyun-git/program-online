@@ -4,7 +4,6 @@
       <logo @click="onLogoClick"></logo>
     </div>
     <div class="space-container">
-      <el-button type="text"><i class="el-icon-bell"></i></el-button>
       <el-input
         placeholder="站内搜索"
         prefix-icon="el-icon-search"
@@ -19,6 +18,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
+      <el-button type="text"><i class="el-icon-bell"></i></el-button>
       <el-dropdown>
         <el-button type="text">我的</el-button>
         <template #dropdown>
