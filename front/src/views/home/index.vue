@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home main-container">
     <img alt="Vue logo" src="~@/assets/logo.png">
     <el-button plain @click="$router.push('/login')">去登录</el-button>
     <el-button plain @click="load">Loading</el-button>

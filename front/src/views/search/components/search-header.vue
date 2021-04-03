@@ -4,7 +4,7 @@
       <el-input
         class="search-input"
         placeholder="搜索内容"
-        v-model="q"
+        v-model="searchValue"
         @keydown.enter="onSearch"
       >
         <template #append>
@@ -85,6 +85,9 @@ export default {
     queryValue (value) {
       this.searchValue = value
     }
+  },
+  created () {
+    this.searchValue = this.queryValue
   }
 }
 </script>
