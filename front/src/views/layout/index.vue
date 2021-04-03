@@ -6,7 +6,7 @@
       <layout-header class="header"></layout-header>
     </el-header>
     <el-main class="el-main">
-      <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component }" :key="$route.fullPath">
         <keep-alive>
           <component :is="Component"/>
         </keep-alive>

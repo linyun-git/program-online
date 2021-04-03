@@ -20,10 +20,20 @@ const routes = [
       {
         path: 'search',
         component: () => import('@/views/search'),
-        name: 'home',
+        name: 'search',
         meta: {
           // 匹配规则
           name: '搜索',
+          title: '',
+          icon: 'icon-name'
+        }
+      },
+      {
+        path: 'workspace',
+        component: () => import('@/views/workspace'),
+        name: 'workspace',
+        meta: {
+          name: '仓库',
           title: '',
           icon: 'icon-name'
         }

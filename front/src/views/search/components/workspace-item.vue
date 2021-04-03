@@ -36,10 +36,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-h3 {
-  font-size: 17px;
-  margin: 0;
-}
-</style>

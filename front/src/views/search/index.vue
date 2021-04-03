@@ -1,7 +1,7 @@
 <template>
   <div class="search-body">
     <search-header :query-value="q" :query-type="type" @search="query"></search-header>
-    <search-content></search-content>
+    <search-content :query-type="type"></search-content>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   data () {
     return {
       page: 1,
-      type: 'workspace',
+      type: 'project',
       q: ' '
     }
   },
@@ -27,31 +27,31 @@ export default {
     },
     isProject () {
       return this.type === 'project'
+    },
+    isUser () {
+      return this.type === 'user'
     }
   },
   created () {
-    console.log(1)
-    this.init()
-    this.$watch(() => this.$route.query, () => {
-      this.init()
-    })
+    const {
+      page,
+      q,
+      type
+    } = this.$route.query
+    this.page = parseInt(page, 10) || 1
+    this.q = q || ' '
+    this.type = type || 'project'
   },
   methods: {
-    init () {
-      const {
-        page,
-        q,
-        type
-      } = this.$route.query
-      this.page = parseInt(page, 10) || 1
-      this.q = q || ' '
-      this.type = type || 'workspace'
-    },
     change () {
       this.$router.push('/search?p=456')
     },
-    query () {
-      console.log('ok')
+    query (queryParams) {
+      const {
+        queryValue,
+        queryType
+      } = queryParams
+      this.$router.push(`/search?q=${queryValue || ''}&type=${queryType || this.type}&page=${this.page}`)
     }
   },
   activated () {
@@ -60,12 +60,13 @@ export default {
 }
 </script>
 <style lang="less">
-.search-body{
+.search-body {
   .search-input {
-    input{
+    input {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
+
     .el-button {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;

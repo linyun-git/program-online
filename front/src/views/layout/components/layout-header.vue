@@ -7,6 +7,7 @@
       <el-input
         placeholder="站内搜索"
         prefix-icon="el-icon-search"
+        @keydown.enter="onSearch"
         v-model="searchValue">
       </el-input>
       <el-dropdown>
@@ -24,12 +25,12 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>个人主页</el-dropdown-item>
-            <el-dropdown-item>我的仓库</el-dropdown-item>
+            <el-dropdown-item @click="onMyWorkspace">我的仓库</el-dropdown-item>
             <el-dropdown-item>退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-button type="text">登录/注册</el-button>
+      <el-button type="text" @click="onLoginClick">登录/注册</el-button>
     </div>
   </div>
 </template>
@@ -44,7 +45,17 @@ export default {
   },
   methods: {
     onLogoClick () {
-      console.log('click')
+      this.$router.push('/')
+    },
+    onSearch () {
+      this.$router.push(`/search?q=${this.searchValue}`)
+      this.searchValue = ''
+    },
+    onLoginClick () {
+      this.$router.push('/login')
+    },
+    onMyWorkspace () {
+      this.$router.push('/workspace')
     }
   }
 }
@@ -59,12 +70,14 @@ export default {
   .el-button + .el-button {
     margin-left: 0;
   }
+
   .el-input input {
     font-size: 14px;
     height: 2em;
     width: 10em;
     transition: width .3s ease-out;
   }
+
   .el-input input:focus {
     width: 14em;
   }
