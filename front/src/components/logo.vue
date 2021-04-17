@@ -1,5 +1,5 @@
 <template>
-  <a>CodeOnline</a>
+  <a href="/">CodeOnline</a>
 </template>
 
 <script>
@@ -15,5 +15,8 @@ a {
   font-style: italic;
   font-weight: 800;
   color: #409eff;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
 }
 </style>

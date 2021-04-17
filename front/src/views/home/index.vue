@@ -2,6 +2,7 @@
   <div class="home main-container">
     <img alt="Vue logo" src="~@/assets/logo.png">
     <el-button plain @click="$router.push('/login')">去登录</el-button>
+    <el-button plain @click="toCode">To Code</el-button>
     <el-button plain @click="load">Loading</el-button>
     <el-button plain @click="success">Success</el-button>
     <el-button plain @click="info">Info</el-button>
@@ -23,6 +24,9 @@ export default {
     console.log(this.$api)
   },
   methods: {
+    toCode () {
+      window.open('/code/1')
+    },
     load () {
       this.loading = message.fullLoading()
     },

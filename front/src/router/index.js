@@ -1,4 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import home from './layout-routes/home'
+import search from './layout-routes/search'
+import workspace from './layout-routes/workspace'
+import project from './layout-routes/project'
 
 const routes = [
   {
@@ -6,43 +10,19 @@ const routes = [
     name: 'layout',
     component: () => import('@/views/layout'),
     children: [
-      {
-        path: '',
-        component: () => import('@/views/home'),
-        name: 'home',
-        meta: {
-          // 匹配规则
-          name: '首页',
-          title: '',
-          icon: 'icon-name'
-        }
-      },
-      {
-        path: 'search',
-        component: () => import('@/views/search'),
-        name: 'search',
-        meta: {
-          // 匹配规则
-          name: '搜索',
-          title: '',
-          icon: 'icon-name'
-        }
-      },
-      {
-        path: 'workspace',
-        component: () => import('@/views/workspace'),
-        name: 'workspace',
-        meta: {
-          name: '仓库',
-          title: '',
-          icon: 'icon-name'
-        }
-      }
+      home,
+      search,
+      workspace,
+      project
     ]
   },
   {
     path: '/login',
     component: () => import('@/views/login')
+  },
+  {
+    path: '/code/:projectId',
+    component: () => import('@/views/code')
   },
   {
     path: '/page-not-found',
