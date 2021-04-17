@@ -1,7 +1,7 @@
 <template>
   <div class="workspace-header-body">
     <div class="main-container">
-      <h3 style="margin: 0">这里是标题</h3>
+      <h3 style="margin: 0">Dev Workspace</h3>
       <div class="tab-container">
         <a class="tab-button active">项目 <el-tag>{{count}}</el-tag></a>
         <a class="tab-button">设置</a>

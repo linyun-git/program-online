@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div class="main-container">
+    <workspace-list></workspace-list>
+  </div>
 </template>
 
 <script>
