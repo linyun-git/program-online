@@ -10,9 +10,7 @@
       <div class="folders-container">
         <code-folders></code-folders>
       </div>
-      <div class="editor-container">
-        <code-editor-tabs></code-editor-tabs>
-      </div>
+      <code-editor-tabs class="editor-container"></code-editor-tabs>
     </div>
   </div>
 </template>
@@ -43,9 +41,8 @@ export default {
 <style lang="less" scoped>
 .code-page-body {
   height: 100vh;
+  width: 100vw;
   overflow-y: hidden;
-  display: flex;
-  flex-direction: column;
 
   .top-container {
     background-color: #DCDFE6;
@@ -53,15 +50,18 @@ export default {
 
   .bottom-container {
     background-color: antiquewhite;
-    flex: 1;
+    height: calc(100% - 65px);
+    width: 100%;
     display: flex;
+
     .folders-container {
-      min-width: 300px;
       border: 1px solid #409EFF;
+      width: 300px;
     }
+
     .editor-container {
-      flex: 1;
-      border: 1px solid #409EFF;
+      height: 100%;
+      width: calc(100% - 300px);
     }
   }
 }

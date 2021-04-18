@@ -1,22 +1,31 @@
 <template>
-  <div style="border: 1px solid black">
-    <monaco-editor theme="vs" language="typescript" :editorOptions="options"></monaco-editor>
-  </div>
+  <monaco-editor :code="code" @update:code="$emit('update:code', $event)" :theme="theme" :language="language"
+                 :editorOptions="options" :srcPath="srcPath"></monaco-editor>
 </template>
 
 <script>
-import MonacoEditor from 'vue-monaco-editor'
+import MonacoEditor from '@/components/monaco-editor'
 
 export default {
   name: 'code-editor',
+  props: {
+    language: String,
+    theme: String,
+    code: String
+  },
   components: {
     MonacoEditor
   },
   data () {
     return {
-      options: {
-        automaticLayout: true
-      }
+      editor: null,
+      options: {},
+      srcPath: '/monaco-editor/min'
+    }
+  },
+  methods: {},
+  watch: {
+    code (value) {
     }
   }
 }
