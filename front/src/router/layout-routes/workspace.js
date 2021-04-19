@@ -1,5 +1,5 @@
 export default {
-  path: 'workspace',
+  path: 'workspace/:workspaceId',
   component: () => import('@/views/workspace'),
   name: 'workspace',
   meta: {

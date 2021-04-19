@@ -1,5 +1,5 @@
 export default {
-  path: 'project',
+  path: 'project/:projectId',
   component: () => import('@/views/project'),
   name: 'project',
   meta: {

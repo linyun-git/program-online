@@ -3,6 +3,7 @@ import home from './layout-routes/home'
 import search from './layout-routes/search'
 import workspace from './layout-routes/workspace'
 import project from './layout-routes/project'
+import space from './layout-routes/space'
 
 const routes = [
   {
@@ -13,7 +14,8 @@ const routes = [
       home,
       search,
       workspace,
-      project
+      project,
+      space
     ]
   },
   {

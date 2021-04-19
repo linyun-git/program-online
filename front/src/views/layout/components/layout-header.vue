@@ -24,8 +24,8 @@
         <el-button type="text">我的</el-button>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>个人主页</el-dropdown-item>
-            <el-dropdown-item @click="onMyWorkspace">我的仓库</el-dropdown-item>
+            <el-dropdown-item @click="onMySpace">个人主页</el-dropdown-item>
+<!--            <el-dropdown-item @click="onMyWorkspace">我的仓库</el-dropdown-item>-->
             <el-dropdown-item>退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -56,6 +56,9 @@ export default {
     },
     onMyWorkspace () {
       this.$router.push('/workspace')
+    },
+    onMySpace () {
+      this.$router.push('/space/1')
     }
   }
 }

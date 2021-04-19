@@ -1,8 +1,16 @@
 // LOGO
-.text-logo {
+.logo {
+  font-weight: 800;
+  font-style: italic;
+  font-family: "Helvetica Neue", Arial, serif;
+  color: #409eff;
+  user-select: none;
+  text-decoration: none;
 
+  &::after {
+    content: 'CodeOnline';
+  }
 }
-
 
 // 间距容器
 .space-container {
@@ -24,5 +32,25 @@
   margin: 0 auto;
   padding: 20px;
   box-sizing: content-box;
+}
+
+// 自动盒子，高度自动调整为与宽度相等
+.auto-box{
+  position: relative;
+  height: auto;
+  &::before{
+    display: block;
+    content: '';
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+  }
+  & > *{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 

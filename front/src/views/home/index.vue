@@ -1,13 +1,26 @@
 <template>
-  <div class="home main-container">
-    <img alt="Vue logo" src="~@/assets/logo.png">
-    <el-button plain @click="$router.push('/login')">去登录</el-button>
-    <el-button plain @click="toCode">To Code</el-button>
-    <el-button plain @click="load">Loading</el-button>
-    <el-button plain @click="success">Success</el-button>
-    <el-button plain @click="info">Info</el-button>
-    <el-button plain @click="error">Error</el-button>
-    <el-button plain @click="warning">Warning</el-button>
+  <div class="home-body">
+    <div class="home-body-top">
+      <div class="main-container">
+        <div class="home-body-logo">
+          <logo size="large" block :linked="false"></logo>
+        </div>
+        <div class="home-body-content">
+          <p class="description">
+            一个基于docker和monaco editor的在线编程系统
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="main-container">
+      <el-button plain @click="$router.push('/login')">去登录</el-button>
+      <el-button plain @click="toCode">To Code</el-button>
+      <el-button plain @click="load">Loading</el-button>
+      <el-button plain @click="success">Success</el-button>
+      <el-button plain @click="info">Info</el-button>
+      <el-button plain @click="error">Error</el-button>
+      <el-button plain @click="warning">Warning</el-button>
+    </div>
   </div>
 </template>
 
@@ -45,3 +58,33 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.home-body {
+
+  .home-body-top {
+    background-color: #ecf5ff;
+
+    .home-body-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: .3;
+    }
+
+    .home-body-content {
+      .description {
+        font-size: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #888;
+      }
+    }
+  }
+
+  .home-body-content {
+  }
+}
+</style>
