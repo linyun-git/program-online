@@ -1,6 +1,6 @@
 <template>
   <div class="content-item">
-    <h3 class="content-title">{{ workspace.title }}</h3>
+    <h3 class="content-title"><span class="workspace-title" @click="onTitleClick">{{ workspace.title }}</span></h3>
     <p class="content-description">{{ workspace.description }}</p>
     <div class="content-tag-container">
       <el-tag size="small" type="info" v-for="environment of workspace.environments" :key="environment.name">{{
@@ -9,7 +9,9 @@
         {{ environment.version }}
       </el-tag>
     </div>
-    <div class="content-unimportant content-tag-container"><span>作者：{{ workspace.creator }}</span><span>创建日期：{{ workspace.createDate }}</span></div>
+    <div class="content-unimportant content-tag-container"><span>作者：{{
+        workspace.creator
+      }}</span><span>创建日期：{{ workspace.createDate }}</span></div>
   </div>
 </template>
 
@@ -42,6 +44,11 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    onTitleClick () {
+      this.$router.push('/workspace/1')
+    }
   }
 }
 </script>
@@ -58,6 +65,10 @@ export default {
 
   > *:not(:last-child) {
     margin-bottom: 10px;
+  }
+
+  .workspace-title {
+    cursor: pointer;
   }
 
   .content-title {

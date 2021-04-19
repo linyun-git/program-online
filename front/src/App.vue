@@ -3,6 +3,7 @@
 </template>
 
 <style src="./assets/css/base.less" lang="less"></style>
+<style src="./assets/css/file-type-icon.css" lang="css"></style>
 
 <style lang="less">
 body {
@@ -12,7 +13,8 @@ body {
   margin: 0;
   padding: 0;
 }
-#app{
+
+#app {
   min-height: 100%;
   min-width: 100%;
 }

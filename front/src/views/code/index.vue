@@ -49,7 +49,7 @@ export default {
   }
 
   .bottom-container {
-    background-color: antiquewhite;
+    background-color: #fff;
     height: calc(100% - 65px);
     width: 100%;
     display: flex;

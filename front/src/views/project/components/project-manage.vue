@@ -1,10 +1,10 @@
 <template>
-  <div></div>
+  <div>manage</div>
 </template>
 
 <script>
 export default {
-  name: 'workspace-setting'
+  name: 'project-manage'
 }
 </script>
 

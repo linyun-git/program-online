@@ -1,9 +1,9 @@
 <template>
   <div class="workspace-header-body">
     <div class="main-container">
-      <h3 style="margin: 0">Dev Workspace</h3>
+      <h3 style="margin: 0">白风 / Project Name</h3>
       <div class="tab-container">
-        <a class="tab-button" :class="{active: type === 'project'}" @click="typeTo('project')">项目
+        <a class="tab-button" :class="{active: type === 'code'}" @click="typeTo('code')">代码
           <el-tag>{{ count }}</el-tag>
         </a>
         <a class="tab-button" :class="{active: type === 'manage'}" @click="typeTo('manage')">管理</a>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'workspace-header',
+  name: 'project-header',
   data () {
     return {
       count: 10
@@ -24,8 +24,8 @@ export default {
     type () {
       return this.$route.query.type
     },
-    workspaceId () {
-      return this.$route.params.workspaceId
+    projectId () {
+      return this.$route.params.projectId
     }
   },
   methods: {
@@ -33,13 +33,13 @@ export default {
       if (type === this.type) {
         return
       }
-      this.$router.push(`/workspace/${this.workspaceId}?type=${type}`)
+      this.$router.push(`/project/${this.projectId}?type=${type}`)
     },
     checkType () {
-      if (['project', 'manage'].includes(this.type)) {
+      if (['code', 'manage'].includes(this.type)) {
         return
       }
-      this.$router.push(`/workspace/${this.workspaceId}?type=project`)
+      this.$router.push(`/project/${this.projectId}?type=code`)
     }
   },
   activated () {
