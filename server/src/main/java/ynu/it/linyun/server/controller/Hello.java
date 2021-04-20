@@ -1,6 +1,5 @@
-package ynu.it.linyun.controller;
+package ynu.it.linyun.server.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
