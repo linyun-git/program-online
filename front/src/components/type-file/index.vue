@@ -1,9 +1,10 @@
 <template>
   <div class="type-file-body">
-    <div class="b-icon type-file-icon" :class="[folder ? 'b-icon_type_folder' : 'b-icon_type_file']">
-      .js
+    <div class="b-icon type-file-icon"
+         :class="[folder ? 'b-icon_type_folder' : 'b-icon_type_file', 'b-icon_ext_' + suffix]">
+      {{ folder ? '' : suffix.charAt(0) }}
     </div>
-    <span class="type-file-name">这里是文件名</span>
+    <span class="type-file-name" @click="onFileNameClick">{{ fileName }}</span>
   </div>
 </template>
 
@@ -14,6 +15,24 @@ export default {
     folder: {
       type: Boolean,
       default: () => false
+    },
+    fileName: {
+      type: String,
+      default: () => ''
+    }
+  },
+  computed: {
+    suffix () {
+      const arr = this.fileName.split('.')
+      if (arr.length < 2) {
+        return 't'
+      }
+      return arr[arr.length - 1]
+    }
+  },
+  methods: {
+    onFileNameClick () {
+      this.$emit('onFileNameClick')
     }
   }
 }

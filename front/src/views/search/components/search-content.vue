@@ -5,12 +5,10 @@
       <span>共999个查询结果</span>
     </div>
     <div v-if="isWorkspace">
-      <workspace-item></workspace-item>
-      <workspace-item></workspace-item>
-      <workspace-item></workspace-item>
+      <workspace-list></workspace-list>
     </div>
     <div v-if="isProject">
-      <project-item></project-item>
+      <project-list></project-list>
     </div>
     <div v-if="isUser">
       <user-item></user-item>
@@ -25,15 +23,11 @@
 </template>
 
 <script>
-import WorkspaceItem from './workspace-item'
-import ProjectItem from './project-item'
 import UserItem from './user-item'
 
 export default {
   name: 'search-content',
   components: {
-    WorkspaceItem,
-    ProjectItem,
     UserItem
   },
   props: {
