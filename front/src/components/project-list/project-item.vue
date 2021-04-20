@@ -25,7 +25,7 @@ export default {
   methods: {
     toProject (projectId) {
       console.log(1)
-      this.$router.push(`/project/${projectId}`)
+      this.$router.push(`/project/${projectId}?type=code`)
     }
   }
 }

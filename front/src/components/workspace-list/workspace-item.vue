@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     onTitleClick () {
-      this.$router.push('/workspace/1')
+      this.$router.push('/workspace/1?type=project')
     }
   }
 }
