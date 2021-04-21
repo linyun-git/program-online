@@ -23,10 +23,6 @@ public class UserController {
 
     @GetMapping(value = "/query")
     public String queryUser(@RequestParam(value = "id") Integer id){
-        HttpServletResponse response = new Response();
-        Cookie cookie = new Cookie("token", "1");
-        response.addCookie(cookie);
-        cookie.setMaxAge(7 * 24 * 60 * 60);
         User user = userService.selectUser(id);
         if (user == null) {
             return "user not found";
