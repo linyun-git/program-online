@@ -1,6 +1,6 @@
 package ynu.it.linyun.server.mapper;
 
-import ynu.it.linyun.server.entity.User;
+import ynu.it.linyun.server.entity.Project;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author linyun
  * @since 2021-04-21
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface ProjectMapper extends BaseMapper<Project> {
 
 }

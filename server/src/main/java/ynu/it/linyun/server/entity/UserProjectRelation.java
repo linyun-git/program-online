@@ -18,20 +18,24 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class User implements Serializable {
+public class UserProjectRelation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String email;
+    private Integer userId;
 
-    private String name;
+    private Integer projectId;
 
-    private String password;
+    private Integer authorityRead;
 
-    private String profile;
+    private Integer authorityWrite;
+
+    private Integer authorityManage;
+
+    private Integer authorityOwner;
 
 
 }

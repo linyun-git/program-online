@@ -1,6 +1,6 @@
 package ynu.it.linyun.server.service;
 
-import ynu.it.linyun.server.entity.User;
+import ynu.it.linyun.server.entity.WorkspaceProjectRelation;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author linyun
  * @since 2021-04-21
  */
-public interface UserService extends IService<User> {
+public interface WorkspaceProjectRelationService extends IService<WorkspaceProjectRelation> {
 
 }

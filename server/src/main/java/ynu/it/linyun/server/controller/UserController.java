@@ -1,32 +1,35 @@
 package ynu.it.linyun.server.controller;
 
-import org.apache.catalina.connector.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RestController;
 import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.service.UserService;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 /**
+ * <p>
+ * 前端控制器
+ * </p>
+ *
  * @author linyun
- * @create 2021-04-20-22:50
+ * @since 2021-04-21
  */
-
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/query")
-    public String queryUser(@RequestParam(value = "id") Integer id){
-        User user = userService.selectUser(id);
-        if (user == null) {
-            return "user not found";
+    @GetMapping("/index")
+    public Object index() {
+        User user = userService.getById(1L);
+        if (null == user) {
+            return "未找到该人员信息";
         }
-        return user.toString();
+        return user;
     }
 }
