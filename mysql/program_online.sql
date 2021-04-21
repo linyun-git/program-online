@@ -5,15 +5,16 @@ create database if not exists program_online;
 use program_online;
 
 # 创建用户表
-create table if not exists users(
+create table if not exists user(
     id integer primary key auto_increment,
     email varchar(50) not null unique,
     name varchar(50) not null unique,
-    password varchar(50) not null
+    password varchar(50) not null,
+    profile varchar(50)
 );
 
 # 创建仓库表
-create table if not exists workspaces(
+create table if not exists workspace(
     id integer primary key auto_increment,
     name varchar(50) not null unique,
     authority_type enum('public', 'private') not null,
@@ -21,7 +22,7 @@ create table if not exists workspaces(
 );
 
 # 创建仓库表
-create table if not exists projects(
+create table if not exists project(
     id integer primary key auto_increment,
     name varchar(50) not null unique,
     authority_type enum('public', 'private') not null,
@@ -29,25 +30,25 @@ create table if not exists projects(
 );
 
 # 创建仓库-项目关系表
-create table if not exists workspace_project_relations(
+create table if not exists workspace_project_relation(
     id integer primary key auto_increment,
     workspace_id integer not null,
     project_id integer not null,
-    foreign key(workspace_id) references workspaces(id),
-    foreign key(project_id) references projects(id)
+    foreign key(workspace_id) references workspace(id),
+    foreign key(project_id) references project(id)
 );
 
 # 创建仓库-环境关系表
-create table if not exists workspace_environment_relations(
+create table if not exists workspace_environment_relation(
     id integer primary key auto_increment,
     workspace_id integer not null,
     environment_name varchar(20) not null,
     environment_version varchar(20) not null,
-    foreign key(workspace_id) references workspaces(id)
+    foreign key(workspace_id) references workspace(id)
 );
 
 # 创建用户-仓库权限关系表
-create table if not exists user_workspace_relations(
+create table if not exists user_workspace_relation(
     id integer primary key auto_increment,
     user_id integer not null,
     workspace_id integer not null,
@@ -55,12 +56,12 @@ create table if not exists user_workspace_relations(
     authority_write integer not null,
     authority_manage integer not null,
     authority_owner integer not null,
-    foreign key(workspace_id) references workspaces(id),
-    foreign key(user_id) references users(id)
+    foreign key(workspace_id) references workspace(id),
+    foreign key(user_id) references user(id)
 );
 
 # 创建用户-项目权限关系表
-create table if not exists user_project_relations(
+create table if not exists user_project_relation(
     id integer primary key auto_increment,
     user_id integer not null,
     project_id integer not null,
@@ -68,6 +69,6 @@ create table if not exists user_project_relations(
     authority_write integer not null,
     authority_manage integer not null,
     authority_owner integer not null,
-    foreign key(project_id) references projects(id),
-    foreign key(user_id) references users(id)
+    foreign key(project_id) references project(id),
+    foreign key(user_id) references user(id)
 );

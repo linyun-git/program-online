@@ -1,18 +1,20 @@
 package ynu.it.linyun.server.controller;
 
+
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * <p>
+ *  前端控制器
+ * </p>
+ *
  * @author linyun
- * @create 2021-04-20-17:01
+ * @since 2021-04-21
  */
-
 @RestController
-@RequestMapping(value = "/")
-public class Hello {
-    @RequestMapping("")
-    public String HelloWorld() {
-        return "Hello world!";
-    }
+@RequestMapping("/user-project-relation")
+public class UserProjectRelationController {
+
 }
