@@ -1,5 +1,7 @@
 package ynu.it.linyun.server.service;
 
+import ynu.it.linyun.server.common.dto.QueryDto;
+import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.entity.Project;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ProjectService extends IService<Project> {
 
+    public Result queryList(QueryDto queryDto);
+
+    public Result add(Project project);
 }

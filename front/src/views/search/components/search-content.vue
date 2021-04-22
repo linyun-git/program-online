@@ -2,46 +2,99 @@
   <div class="main-container search-content-body">
     <div class="search-content-header content-item">
       <span class="sort-container">默认排序</span>
-      <span>共999个查询结果</span>
+      <span>共{{ count }}个查询结果</span>
     </div>
-    <div v-if="isWorkspace">
-      <workspace-list></workspace-list>
+    <div v-if="queryType === 'workspace'">
+      <workspace-list :workspace-list="list" :page="pageIndex" :size="size" :count="count" @page-change="onPageChange"></workspace-list>
     </div>
-    <div v-if="isProject">
-      <project-list></project-list>
+    <div v-if="queryType === 'project'">
+      <project-list :project-list="list" :page="pageIndex" :size="size" :count="count" @page-change="onPageChange"></project-list>
     </div>
-    <div v-if="isUser">
-      <user-item></user-item>
-      <user-item></user-item>
-      <user-item></user-item>
-      <user-item></user-item>
-      <user-item></user-item>
-      <user-item></user-item>
-      <user-item></user-item>
+    <div v-if="queryType === 'user'">
+      <user-list :user-list="list" :page="pageIndex" :size="size" :count="count" @page-change="onPageChange"></user-list>
     </div>
   </div>
 </template>
 
 <script>
-import UserItem from './user-item'
 
 export default {
   name: 'search-content',
-  components: {
-    UserItem
+  data () {
+    return {
+      list: [],
+      count: 0,
+      size: 10
+    }
   },
-  props: {
-    queryType: String
+  created () {
+    this.query()
   },
   computed: {
-    isWorkspace () {
-      return this.queryType === 'workspace'
+    queryValue () {
+      return this.$route.query.q || ''
     },
-    isProject () {
-      return this.queryType === 'project'
+    queryType () {
+      return this.$route.query.type || 'project'
     },
-    isUser () {
-      return this.queryType === 'user'
+    pageIndex () {
+      return parseInt(this.$route.query.page, 10) || 1
+    },
+    queryParams () {
+      return {
+        query: this.queryValue,
+        pageIndex: this.pageIndex,
+        pageSize: this.size
+      }
+    }
+  },
+  methods: {
+    query () {
+      switch (this.queryType) {
+        case 'workspace':
+          this.queryWorkspace()
+          break
+        case 'project':
+          this.queryProject()
+          break
+        case 'user':
+          this.queryUser()
+          break
+      }
+    },
+    queryWorkspace () {
+      this.$api.workspace.list(this.queryParams).then(rep => {
+        const {
+          count,
+          list
+        } = rep.data
+        this.list = list
+        this.count = count
+      })
+    },
+    queryProject () {
+      this.$api.project.list(this.queryParams).then(rep => {
+        const {
+          count,
+          list
+        } = rep.data
+        this.list = list
+        this.count = count
+      })
+    },
+    queryUser () {
+      this.$api.user.list(this.queryParams).then(rep => {
+        const {
+          count,
+          list
+        } = rep.data
+        this.list = list
+        this.count = count
+      })
+    },
+    onPageChange (page) {
+      this.pageIndex = page
+      this.$router.push(`/search?q=${this.queryValue}&type=${this.queryType}&page=${page}`)
     }
   }
 }

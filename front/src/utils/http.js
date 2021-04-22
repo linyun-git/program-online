@@ -33,16 +33,38 @@ function get (url, params = {}, options = {}) {
       params,
       ...options
     })
-      .then(response => resolve(response))
-      .catch(error => reject(error))
+      .then(response => {
+        if (response.code === '200') {
+          resolve(response)
+        } else {
+          reject(response)
+        }
+      })
+      .catch(() => {
+        return {
+          code: '404',
+          msg: '网络错误'
+        }
+      })
   })
 }
 
 function post (url, params = {}, options = {}) {
   return new Promise((resolve, reject) => {
     instance.post(url, params, options)
-      .then(response => resolve(response))
-      .catch(error => reject(error))
+      .then(response => {
+        if (response.code === '200') {
+          resolve(response)
+        } else {
+          reject(response)
+        }
+      })
+      .catch(() => {
+        return {
+          code: '404',
+          msg: '网络错误'
+        }
+      })
   })
 }
 

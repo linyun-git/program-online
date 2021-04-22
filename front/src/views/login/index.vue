@@ -2,10 +2,10 @@
   <el-card class="box-card login-body">
     <el-tabs v-model="activeName">
       <el-tab-pane label="登录" name="login" :lazy="true">
-        <login-form v-if="isLogin" @submit="submit"></login-form>
+        <login-form v-if="isLogin" @submit="login"></login-form>
       </el-tab-pane>
       <el-tab-pane label="注册" name="register" :lazy="true">
-        <register-form v-if="isRegister" @submit="submit"></register-form>
+        <register-form v-if="isRegister" @submit="register"></register-form>
       </el-tab-pane>
     </el-tabs>
   </el-card>
@@ -34,14 +34,28 @@ export default {
     }
   },
   methods: {
-    submit (value) {
+    login (value) {
       this.$api.user.login(value)
         .then(rep => {
-          this.$message.success('这里是成功了的消息')
+          const user = rep.data
+          this.$message.success(`登录成功: ${user.name}`)
+          this.$store.commit('user/Add_USER_INFO', user)
           this.$router.push('/')
         })
         .catch(error => {
           this.$message.error('登录失败：' + error)
+        })
+    },
+    register (value) {
+      this.$api.user.register(value)
+        .then(rep => {
+          const user = rep.data
+          this.$message.success(`注册成功: ${user.name}`)
+          this.$store.commit('user/Add_USER_INFO', user)
+          this.$router.push('/')
+        })
+        .catch(error => {
+          this.$message.error(error.msg)
         })
     }
   }

@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import ynu.it.linyun.server.common.dto.LoginDto;
+import ynu.it.linyun.server.common.dto.QueryDto;
 import ynu.it.linyun.server.common.dto.RegisterDto;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.common.util.Md5;
@@ -50,12 +51,17 @@ public class UserController {
         return userService.login(user);
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public Result register(@Validated @RequestBody RegisterDto registerDto) {
         User user = new User();
         user.setEmail(registerDto.getEmail());
         user.setPassword(Md5.toMd5(registerDto.getPassword()));
         user.setName(registerDto.getName());
         return userService.register(user);
+    }
+
+    @PostMapping("/list")
+    public Result list(@RequestBody QueryDto queryDto) {
+        return userService.queryList(queryDto);
     }
 }

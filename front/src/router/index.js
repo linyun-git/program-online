@@ -4,6 +4,8 @@ import search from './layout-routes/search'
 import workspace from './layout-routes/workspace'
 import project from './layout-routes/project'
 import space from './layout-routes/space'
+import newWorkspace from './layout-routes/new-workspace'
+import newProject from './layout-routes/new-project'
 
 const routes = [
   {
@@ -15,7 +17,9 @@ const routes = [
       search,
       workspace,
       project,
-      space
+      space,
+      newWorkspace,
+      newProject
     ]
   },
   {

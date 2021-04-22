@@ -1,6 +1,15 @@
 <template>
   <div>
     <project-item v-for="(project, index) in projectList" :key="index" :project="project"></project-item>
+    <el-pagination
+      background
+      hide-on-single-page
+      layout="prev, pager, next"
+      :current-page="page"
+      :page-size="size"
+      @current-change="onPageChange"
+      :total="count">
+    </el-pagination>
   </div>
 </template>
 
@@ -15,7 +24,17 @@ export default {
   props: {
     projectList: {
       type: Array,
-      default: () => []
+      default () {
+        return []
+      }
+    },
+    page: Number,
+    size: Number,
+    count: Number
+  },
+  methods: {
+    onPageChange (page) {
+      this.$emit('page-change', page)
     }
   }
 }

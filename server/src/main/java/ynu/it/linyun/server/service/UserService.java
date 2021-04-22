@@ -1,5 +1,6 @@
 package ynu.it.linyun.server.service;
 
+import ynu.it.linyun.server.common.dto.QueryDto;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -27,4 +28,5 @@ public interface UserService extends IService<User> {
      * @return  注册结果
      */
     public Result register(User user);
+    public Result queryList(QueryDto queryDto);
 }

@@ -1,5 +1,5 @@
 export default {
-  baseURL: 'http://localhost:3300',
+  baseURL: 'http://localhost:9000',
   timeout: 5000,
   headers: {
     'Access-Control-Allow-Origin': '*',
@@ -8,17 +8,35 @@ export default {
   path: {
     user: {
       login: {
-        url: '/login',
+        url: '/user/login',
         method: 'post'
       },
       register: {
-        url: '/register',
+        url: '/user/register',
+        method: 'post'
+      },
+      list: {
+        url: '/user/list',
         method: 'post'
       }
     },
     workspace: {
+      add: {
+        url: '/workspace/add',
+        method: 'post'
+      },
       list: {
-        url: '',
+        url: '/workspace/list',
+        method: 'post'
+      }
+    },
+    project: {
+      add: {
+        url: '/project/add',
+        method: 'post'
+      },
+      list: {
+        url: '/project/list',
         method: 'post'
       }
     }

@@ -10,27 +10,28 @@
         @keydown.enter="onSearch"
         v-model="searchValue">
       </el-input>
-      <el-dropdown>
+      <el-dropdown v-if="login">
         <el-button type="text"><i class="el-icon-plus"></i></el-button>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>新建仓库</el-dropdown-item>
+            <el-dropdown-item @click="onCreateWorkspace">新建仓库</el-dropdown-item>
             <el-dropdown-item>代码测试</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-button type="text"><i class="el-icon-bell"></i></el-button>
-      <el-dropdown>
+      <!-- 通知 -->
+      <el-button v-if="login" type="text"><i class="el-icon-bell"></i></el-button>
+      <el-dropdown v-if="login">
         <el-button type="text">我的</el-button>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="onMySpace">个人主页</el-dropdown-item>
 <!--            <el-dropdown-item @click="onMyWorkspace">我的仓库</el-dropdown-item>-->
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-button type="text" @click="onLoginClick">登录/注册</el-button>
+      <el-button v-if="!login" type="text" @click="onLoginClick">登录/注册</el-button>
     </div>
   </div>
 </template>
@@ -41,6 +42,12 @@ export default {
   data () {
     return {
       searchValue: ''
+    }
+  },
+  computed: {
+    login () {
+      const id = this.$store.getters['user/userInfo'].id
+      return id !== null
     }
   },
   methods: {
@@ -59,6 +66,12 @@ export default {
     },
     onMySpace () {
       this.$router.push('/space/1')
+    },
+    logout () {
+      this.$store.dispatch('user/logout')
+    },
+    onCreateWorkspace () {
+      this.$router.push('/new-workspace')
     }
   }
 }

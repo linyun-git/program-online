@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理其他异常
+     *
      * @param e 异常信息
      * @return 其他异常信息
      */
@@ -30,6 +31,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理业务异常
+     *
      * @param e 异常信息
      * @return 业务异常信息
      */
@@ -38,9 +40,10 @@ public class GlobalExceptionHandler {
         return Result.fail(e.getMessage());
     }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result handler(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
-        return Result.fail(objectError.getDefaultMessage());
+        return Result.fail("400").msg(objectError.getDefaultMessage());
     }
 }

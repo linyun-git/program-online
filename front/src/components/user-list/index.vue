@@ -1,6 +1,6 @@
 <template>
   <div>
-    <workspace-item v-for="workspace of workspaceList" :key="workspace.id" :workspace="workspace"></workspace-item>
+    <user-item v-for="user of userList" :key="user.id" :user="user"></user-item>
     <el-pagination
       background
       hide-on-single-page
@@ -14,23 +14,23 @@
 </template>
 
 <script>
-import WorkspaceItem from './workspace-item'
+import UserItem from './user-item'
 
 export default {
-  name: 'workspace-list',
-  components: {
-    WorkspaceItem
-  },
+  name: 'user-list',
   props: {
-    workspaceList: {
+    userList: {
       type: Array,
       default () {
-        return [1, 2, 3, 4, 5, 6]
+        return []
       }
     },
     page: Number,
     size: Number,
     count: Number
+  },
+  components: {
+    UserItem
   },
   methods: {
     onPageChange (page) {

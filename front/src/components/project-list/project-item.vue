@@ -1,6 +1,6 @@
 <template>
   <div class="project-item-body">
-    <h3 class="project-item-title"><span @click="toProject(project.id)">{{ project.title }}</span></h3>
+    <h3 class="project-item-title"><span @click="toProject(project.id)">{{ project.name }}</span></h3>
     <p class="project-item-description">{{ project.description }}</p>
     <div class="project-item-tag-container">
       <span>作者：{{ project.author }}</span>
@@ -18,9 +18,6 @@ export default {
       default: () => {
       }
     }
-  },
-  data () {
-    return {}
   },
   methods: {
     toProject (projectId) {

@@ -1,7 +1,7 @@
 <template>
   <div class="search-body">
-    <search-header :query-value="q" :query-type="type" @search="query"></search-header>
-    <search-content :query-type="type"></search-content>
+    <search-header></search-header>
+    <search-content></search-content>
   </div>
 </template>
 
@@ -13,46 +13,6 @@ export default {
   components: {
     SearchHeader,
     SearchContent
-  },
-  data () {
-    return {
-      page: 1,
-      type: 'project',
-      q: ' '
-    }
-  },
-  computed: {
-    isWorkspace () {
-      return this.type === 'workspace'
-    },
-    isProject () {
-      return this.type === 'project'
-    },
-    isUser () {
-      return this.type === 'user'
-    }
-  },
-  created () {
-    const {
-      page,
-      q,
-      type
-    } = this.$route.query
-    this.page = parseInt(page, 10) || 1
-    this.q = q || ' '
-    this.type = type || 'project'
-  },
-  methods: {
-    change () {
-      this.$router.push('/search?p=456')
-    },
-    query (queryParams) {
-      const {
-        queryValue,
-        queryType
-      } = queryParams
-      this.$router.push(`/search?q=${queryValue || ''}&type=${queryType || this.type}&page=${this.page}`)
-    }
   },
   activated () {
     document.title = '查询'
