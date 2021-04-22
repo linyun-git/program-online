@@ -1,9 +1,13 @@
 package ynu.it.linyun.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import ynu.it.linyun.server.common.dto.QueryDto;
+import ynu.it.linyun.server.common.result.QueryResult;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.entity.User;
+import ynu.it.linyun.server.entity.Workspace;
 import ynu.it.linyun.server.mapper.UserMapper;
 import ynu.it.linyun.server.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -36,6 +40,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result register(User user) {
+        User nameOne = getOne(new QueryWrapper<User>().eq("name", user.getName()));
+        if (nameOne != null) {
+            return Result.fail("400").msg("昵称已存在");
+        }
         User one = getOne(new QueryWrapper<User>().eq("email", user.getEmail()));
         if (one != null) {
             return Result.fail("400").msg("邮箱已存在");
@@ -43,5 +51,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         int id = userMapper.insert(user);
         user.setId(id);
         return Result.success().data(user);
+    }
+
+    @Override
+    public Result queryList(QueryDto queryDto) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+        queryWrapper.like("name", queryDto.getQuery());
+        Page<User> page = new Page<User>(queryDto.getPageIndex(), queryDto.getPageSize());
+        userMapper.selectPage(page, queryWrapper);
+        QueryResult queryResult = new QueryResult();
+        queryResult.setList(page.getRecords());
+        queryResult.setCount(page.getTotal());
+        return Result.success().data(queryResult);
     }
 }

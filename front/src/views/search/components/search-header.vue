@@ -23,11 +23,6 @@
 <script>
 export default {
   name: 'search-header',
-  props: {
-    // 实际查询值
-    queryValue: String,
-    queryType: String
-  },
   data () {
     return {
       // 搜索框的输入值
@@ -60,6 +55,12 @@ export default {
     },
     isUser () {
       return this.queryType === 'user'
+    },
+    queryValue () {
+      return this.$route.query.q || ''
+    },
+    queryType () {
+      return this.$route.query.type || 'project'
     }
   },
   methods: {
@@ -78,12 +79,7 @@ export default {
       this.query(queryParams)
     },
     query (queryParams = {}) {
-      this.$emit('search', queryParams)
-    }
-  },
-  watch: {
-    queryValue (value) {
-      this.searchValue = value
+      this.$router.push(`/search?q=${queryParams.queryValue}&type=${queryParams.queryType}&page=1`)
     }
   },
   created () {

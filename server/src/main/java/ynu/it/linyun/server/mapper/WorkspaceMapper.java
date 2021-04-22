@@ -1,5 +1,6 @@
 package ynu.it.linyun.server.mapper;
 
+import org.springframework.stereotype.Repository;
 import ynu.it.linyun.server.entity.Workspace;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author linyun
  * @since 2021-04-21
  */
+@Repository(value = "workspaceMapper")
 public interface WorkspaceMapper extends BaseMapper<Workspace> {
 
 }
