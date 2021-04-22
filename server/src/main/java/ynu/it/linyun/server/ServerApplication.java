@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author linyun
  * @create 2021-04-20-16:07
  */
-@MapperScan("ynu.it.linyun.server.mapper")
 @SpringBootApplication
+@MapperScan("ynu.it.linyun.server.mapper")
 public class ServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServerApplication.class, args);
