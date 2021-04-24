@@ -24,11 +24,21 @@ const routes = [
   },
   {
     path: '/login',
-    component: () => import('@/views/login')
+    component: () => import('@/views/login'),
+    meta: {
+      unLoginResolve: true,
+      title: '登录',
+      name: '登录'
+    }
   },
   {
     path: '/code/:projectId',
-    component: () => import('@/views/code')
+    component: () => import('@/views/code'),
+    meta: {
+      loginResolve: true,
+      title: 'Code',
+      name: 'Code'
+    }
   },
   {
     path: '/page-not-found',

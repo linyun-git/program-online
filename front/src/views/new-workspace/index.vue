@@ -12,6 +12,13 @@
           <el-input type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}" v-model="info.description"></el-input>
         </el-form-item>
+        <div>
+          <p class="label required-label">环境</p>
+          <environment-form v-for="(environment, index) in info.environments" :key="environment.key"
+                            :hide-delete="index === 0" :ref="addRef"
+                            v-model:enviroment="info.environments[index]" @delete="onDelete(index)"></environment-form>
+          <el-button type="text" @click="onAddEnvironment">添加环境</el-button>
+        </div>
         <el-form-item label="权限控制" prop="authorityType"
                       :rules="[{ required: true, message: '仓库权限不能为空', trigger: ['blur', 'change'] }]">
           <el-radio-group v-model="info.authorityType">
@@ -26,15 +33,28 @@
 </template>
 
 <script>
+import EnvironmentForm from './components/environment-form'
+
 export default {
   name: 'new-workspace',
+  components: {
+    EnvironmentForm
+  },
   data () {
     return {
       info: {
         name: '',
         description: '',
-        authorityType: 'private'
-      }
+        authorityType: 'private',
+        environments: [
+          {
+            name: 'java',
+            version: '11',
+            key: new Date().getTime()
+          }
+        ]
+      },
+      formRefs: []
     }
   },
   methods: {
@@ -45,12 +65,14 @@ export default {
       const {
         name,
         description,
-        authorityType
+        authorityType,
+        environments
       } = this.info
       this.create({
         name,
         description,
-        authorityType
+        authorityType,
+        environments
       })
     },
     validate () {
@@ -59,6 +81,14 @@ export default {
         if (!valid) {
           result = false
           return false
+        }
+      })
+      this.formRefs.forEach(form => {
+        if (!form || !form.checkValid) {
+          return
+        }
+        if (!form.checkValid()) {
+          result = false
         }
       })
       return result
@@ -73,6 +103,19 @@ export default {
         .catch(error => {
           this.$message.error(error.msg)
         })
+    },
+    onAddEnvironment () {
+      this.info.environments.push({
+        name: null,
+        version: null,
+        key: new Date().getTime()
+      })
+    },
+    onDelete (index) {
+      this.info.environments.splice(index, 1)
+    },
+    addRef (ref) {
+      this.formRefs.push(ref)
     }
   },
   computed: {
@@ -85,20 +128,26 @@ export default {
 
 <style lang="less">
 .new-workspace-body {
-  .el-form {
-    .el-form-item {
-      margin-bottom: 0;
-      transition: margin-bottom .3s;
-    }
+  .center-container {
+    > .el-form {
+      > .el-form-item {
+        margin-bottom: 0;
+        transition: margin-bottom .3s;
+      }
 
-    .el-form-item.is-error {
-      margin-bottom: 22px;
-    }
+      > .el-form-item.is-error {
+        margin-bottom: 22px;
+      }
 
-    .el-form-item:nth-last-child(2) {
-      margin-bottom: 22px;
+      > .el-form-item:nth-last-child(2) {
+        margin-bottom: 22px;
+      }
     }
   }
+}
+
+button.el-button--text {
+  padding-top: 0;
 }
 </style>
 
@@ -110,5 +159,22 @@ export default {
 
 .title {
   color: rgba(0, 0, 0, 0.8);
+}
+
+.label {
+  font-size: 14px;
+  margin: 0;
+  padding: 0 0 10px 0;
+  height: 50px;
+  text-align: left;
+  line-height: 40px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.required-label.label::before {
+  content: '*';
+  margin-right: 4px;
+  color: #F56C6C;
 }
 </style>

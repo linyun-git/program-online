@@ -8,21 +8,17 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   config => {
-    console.log(config)
     return config
   }, err => {
-    console.log(err)
     return err
   }
 )
 
 instance.interceptors.response.use(
   res => {
-    console.log(res)
-    return res.data
+    return res
   },
   err => {
-    console.log(err)
     return err
   }
 )
@@ -33,7 +29,7 @@ function get (url, params = {}, options = {}) {
       params,
       ...options
     })
-      .then(response => {
+      .then(({ data: response }) => {
         if (response.code === '200') {
           resolve(response)
         } else {
@@ -52,7 +48,7 @@ function get (url, params = {}, options = {}) {
 function post (url, params = {}, options = {}) {
   return new Promise((resolve, reject) => {
     instance.post(url, params, options)
-      .then(response => {
+      .then(({ data: response }) => {
         if (response.code === '200') {
           resolve(response)
         } else {
@@ -67,6 +63,8 @@ function post (url, params = {}, options = {}) {
       })
   })
 }
+
+export { instance }
 
 export default function request (config = {}, params = {}, options = {}) {
   if (config.method === 'get') {

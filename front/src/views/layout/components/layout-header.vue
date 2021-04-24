@@ -68,7 +68,11 @@ export default {
       this.$router.push('/space/1')
     },
     logout () {
-      this.$store.dispatch('user/logout')
+      this.$api.user.logout().then(() => {
+        this.$store.dispatch('user/logout')
+      }).catch(err => {
+        this.$message.error(err)
+      })
     },
     onCreateWorkspace () {
       this.$router.push('/new-workspace')

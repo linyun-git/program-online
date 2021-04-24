@@ -1,17 +1,18 @@
 package ynu.it.linyun.server.controller;
 
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import ynu.it.linyun.server.common.dto.AddWorkspaceDto;
 import ynu.it.linyun.server.common.dto.QueryDto;
 import ynu.it.linyun.server.common.result.Result;
+import ynu.it.linyun.server.common.util.JWTUtil;
+import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.entity.Workspace;
+import ynu.it.linyun.server.service.UserService;
 import ynu.it.linyun.server.service.WorkspaceService;
 
 /**
@@ -28,6 +29,8 @@ public class WorkspaceController {
 
     @Autowired
     private WorkspaceService workspaceService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/list")
     public Result list(@RequestBody QueryDto queryDto) {
@@ -35,10 +38,11 @@ public class WorkspaceController {
     }
 
     @PostMapping("/add")
-    public Result add(@Validated @RequestBody AddWorkspaceDto addWorkSpaceDto) {
+    public Result add(@Validated @RequestBody AddWorkspaceDto addWorkSpaceDto, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
         Workspace workspace = new Workspace();
         workspace.setName(addWorkSpaceDto.getName());
         workspace.setAuthorityType(addWorkSpaceDto.getAuthorityType());
-        return workspaceService.add(workspace);
+        return workspaceService.add(workspace, user);
     }
 }
