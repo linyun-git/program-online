@@ -8,25 +8,34 @@ use program_online;
 create table if not exists user(
     id integer primary key auto_increment,
     email varchar(50) not null unique,
-    name varchar(50) not null unique,
+    name varchar(50) not null,
     password varchar(50) not null,
+    description varchar(250),
     profile varchar(50)
 );
 
 # 创建仓库表
 create table if not exists workspace(
     id integer primary key auto_increment,
-    name varchar(50) not null unique,
+    name varchar(50) not null,
+    description varchar(250) not null,
     authority_type enum('public', 'private') not null,
-    directory_code varchar(50) not null unique
+    directory_code varchar(50) not null unique,
+    creator integer not null,
+    create_date varchar(50) not null,
+    foreign key(creator) references user(id)
 );
 
-# 创建仓库表
+# 创建项目表
 create table if not exists project(
     id integer primary key auto_increment,
-    name varchar(50) not null unique,
+    name varchar(50) not null,
+    description varchar(250) not null,
     authority_type enum('public', 'private') not null,
-    directory_code varchar(50) not null unique
+    directory_code varchar(50) not null unique,
+    creator integer not null,
+    create_date varchar(50) not null,
+    foreign key(creator) references user(id)
 );
 
 # 创建仓库-项目关系表

@@ -2,6 +2,7 @@ package ynu.it.linyun.server.controller;
 
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.entity.Workspace;
 import ynu.it.linyun.server.service.UserService;
 import ynu.it.linyun.server.service.WorkspaceService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -35,6 +38,18 @@ public class WorkspaceController {
     @PostMapping("/list")
     public Result list(@RequestBody QueryDto queryDto) {
         return workspaceService.queryList(queryDto);
+    }
+
+    @GetMapping("/list/{uid}")
+    public Result list(@PathVariable("uid") Integer uid, @RequestHeader("token") String token) {
+        User loginUser = userService.getUserByToken(token);
+        QueryWrapper<Workspace> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("creator", uid);
+        if (loginUser == null || !loginUser.getId().equals(uid)) {
+            queryWrapper.eq("authority_type", "public");
+        }
+        List<Workspace> list = workspaceService.list(queryWrapper);
+        return Result.success().data(list);
     }
 
     @PostMapping("/add")

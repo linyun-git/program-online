@@ -3,20 +3,22 @@
     <el-row :gutter="5">
       <el-col :xs="24" :sm="10" :md="6">
         <div class="space-left">
-          <img class="profile" src="https://picsum.photos/200/200" alt="">
-          <h3 class="user-name">白风</h3>
-          <p class="user-description">这个人很懒，什么也没写~</p>
+          <img class="profile" :src="info.profile" alt="">
+          <h3 class="user-name">{{ info.name }}</h3>
+          <p class="user-description">{{ info.description }}</p>
         </div>
       </el-col>
       <el-col :xs="24" :sm="14" :md="18">
         <div class="space-right">
           <el-tabs v-model="activeName">
             <el-tab-pane label="仓库" name="workspace"></el-tab-pane>
-            <el-tab-pane label="资料" name="info"></el-tab-pane>
-            <el-tab-pane label="设置" name="setting"></el-tab-pane>
+            <el-tab-pane v-if="isSelf" label="资料" name="info"></el-tab-pane>
+            <el-tab-pane v-if="isSelf" label="设置" name="setting"></el-tab-pane>
           </el-tabs>
           <div class="space-tab-content">
             <space-workspace v-show="activeName === 'workspace'"></space-workspace>
+            <space-info v-show="activeName === 'info'"></space-info>
+            <space-setting v-show="activeName === 'setting'"></space-setting>
           </div>
         </div>
       </el-col>
@@ -26,15 +28,54 @@
 
 <script>
 import SpaceWorkspace from './components/space-workspace'
+import SpaceInfo from './components/space-info'
+import SpaceSetting from './components/space-setting'
 
 export default {
   components: {
-    SpaceWorkspace
+    SpaceWorkspace,
+    SpaceInfo,
+    SpaceSetting
   },
   data () {
     return {
-      activeName: 'workspace'
+      activeName: 'workspace',
+      info: {
+        name: '姓名',
+        profile: 'https://picsum.photos/200/200',
+        description: '这个人很懒，什么也没写'
+      }
     }
+  },
+  computed: {
+    uid () {
+      return parseInt(this.$route.params.uid, 10)
+    },
+    isSelf () {
+      return this.$store.getters['user/userInfo'].id === this.uid
+    }
+  },
+  methods: {
+    query () {
+      if (this.isSelf) {
+        this.patchValue(this.$store.getters['user/userInfo'])
+        return
+      }
+      this.$api.user.query({ id: this.uid })
+        .then(({ data }) => this.patchValue(data))
+        .catch(({ msg }) => this.$message.error(msg))
+    },
+    patchValue (info) {
+      if (!info) {
+        this.patchValue({})
+      }
+      this.info.name = info.name
+      this.info.profile = info.profile
+      this.info.description = info.description
+    }
+  },
+  created () {
+    this.query()
   }
 }
 </script>
@@ -49,6 +90,7 @@ export default {
     border-bottom: none;
     margin-bottom: 0;
   }
+
   .el-tabs__item {
     min-width: 100px;
     text-align: center;

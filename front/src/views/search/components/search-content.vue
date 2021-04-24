@@ -5,14 +5,26 @@
       <span>共{{ count }}个查询结果</span>
     </div>
     <div v-if="queryType === 'workspace'">
-      <workspace-list :workspace-list="list" :page="pageIndex" :size="size" :count="count" @page-change="onPageChange"></workspace-list>
+      <workspace-list :workspace-list="list" :page="pageIndex" :size="size" :count="count"
+                      @page-change="onPageChange"></workspace-list>
     </div>
     <div v-if="queryType === 'project'">
-      <project-list :project-list="list" :page="pageIndex" :size="size" :count="count" @page-change="onPageChange"></project-list>
+      <project-list :project-list="list" :page="pageIndex" :size="size" :count="count"
+                    @page-change="onPageChange"></project-list>
     </div>
     <div v-if="queryType === 'user'">
-      <user-list :user-list="list" :page="pageIndex" :size="size" :count="count" @page-change="onPageChange"></user-list>
+      <user-list :user-list="list" :page="pageIndex" :size="size" :count="count"
+                 @page-change="onPageChange"></user-list>
     </div>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :current-page="pageIndex"
+      :page-size="size"
+      @current-change="onPageChange"
+      hide-on-single-page
+      :total="count">
+    </el-pagination>
   </div>
 </template>
 

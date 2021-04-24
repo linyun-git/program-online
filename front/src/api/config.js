@@ -1,6 +1,6 @@
 export default {
-  // baseURL: 'http://localhost:9000',
-  baseURL: 'http://service.explosion.red',
+  baseURL: 'http://localhost:9000',
+  // baseURL: 'http://service.explosion.red',
   timeout: 5000,
   headers: {
     'Access-Control-Allow-Origin': '*',
@@ -27,6 +27,15 @@ export default {
       list: {
         url: '/user/list',
         method: 'post'
+      },
+      update: {
+        url: '/user/update',
+        method: 'post'
+      },
+      query: {
+        url: '/user/query/{id}',
+        method: 'get',
+        restful: true
       }
     },
     workspace: {
@@ -37,6 +46,11 @@ export default {
       list: {
         url: '/workspace/list',
         method: 'post'
+      },
+      listByUid: {
+        url: '/workspace/list/{uid}',
+        method: 'get',
+        restful: true
       }
     },
     project: {
