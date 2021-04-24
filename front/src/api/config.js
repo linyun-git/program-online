@@ -1,6 +1,6 @@
 export default {
-  baseURL: 'http://localhost:9000',
-  // baseURL: 'http://service.explosion.red',
+  // baseURL: 'http://localhost:9000',
+  baseURL: 'http://service.explosion.red',
   timeout: 5000,
   headers: {
     'Access-Control-Allow-Origin': '*',
