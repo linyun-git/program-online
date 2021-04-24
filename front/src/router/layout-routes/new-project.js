@@ -5,6 +5,7 @@ export default {
   meta: {
     name: '新建',
     title: '',
-    icon: 'icon-name'
+    icon: 'icon-name',
+    loginResolve: true
   }
 }

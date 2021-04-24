@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import ynu.it.linyun.server.common.dto.QueryDto;
+import ynu.it.linyun.server.common.exception.BusinessException;
 import ynu.it.linyun.server.common.result.QueryResult;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.common.util.Md5;
+import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.entity.Workspace;
 import ynu.it.linyun.server.local.WorkspaceIo;
 import ynu.it.linyun.server.mapper.WorkspaceMapper;
@@ -42,7 +44,10 @@ public class WorkspaceServiceImpl extends ServiceImpl<WorkspaceMapper, Workspace
     }
 
     @Override
-    public Result add(Workspace workspace) {
+    public Result add(Workspace workspace, User user) {
+        if (null == user) {
+            throw new BusinessException("未登录");
+        }
         String name = workspace.getName();
         QueryWrapper<Workspace> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name", name);
