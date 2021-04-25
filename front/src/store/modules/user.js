@@ -2,7 +2,8 @@ const state = {
   id: null,
   name: null,
   profile: null,
-  email: null
+  email: null,
+  description: null
 }
 
 const mutations = {
@@ -10,12 +11,14 @@ const mutations = {
     id,
     name,
     profile,
-    email
+    email,
+    description
   }) {
     state.id = id
     state.name = name
     state.profile = profile
     state.email = email
+    state.description = description
   }
 }
 
@@ -35,13 +38,15 @@ const getters = {
     id,
     name,
     profile,
-    email
+    email,
+    description
   }) => {
     return {
       id,
       name,
       profile,
-      email
+      email,
+      description
     }
   }
 }

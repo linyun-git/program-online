@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ynu.it.linyun.server.common.dto.LoginDto;
 import ynu.it.linyun.server.common.dto.QueryDto;
 import ynu.it.linyun.server.common.dto.RegisterDto;
+import ynu.it.linyun.server.common.dto.UpdateUserDto;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.common.util.JWTUtil;
 import ynu.it.linyun.server.common.util.Md5;
@@ -90,5 +91,26 @@ public class UserController {
     @PostMapping("/list")
     public Result list(@RequestBody QueryDto queryDto) {
         return userService.queryList(queryDto);
+    }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody UpdateUserDto updateUserDto, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        if (null == user) {
+            return Result.fail("403").msg("没有登陆");
+        }
+        user.setName(updateUserDto.getName());
+        user.setDescription(updateUserDto.getDescription());
+        userService.updateById(user);
+        return Result.success().data(user);
+    }
+
+    @GetMapping("query/{id}")
+    public Result query(@PathVariable("id") Integer id) {
+        User user = userService.getById(id);
+        if (null == user) {
+            return Result.fail("404").msg("未找到用户");
+        }
+        return Result.success().data(user);
     }
 }

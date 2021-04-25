@@ -6,3 +6,6 @@ export const add = params => http(networkConfig.path.project.add, params)
 
 // 查询仓库
 export const list = params => http(networkConfig.path.project.list, params)
+
+// 查询仓库
+export const pathInfo = params => http(networkConfig.path.project.pathInfo, {}, {}, params)

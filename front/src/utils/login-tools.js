@@ -18,7 +18,7 @@ const autoRequest = httpInstance => {
     return config
   })
   httpInstance.interceptors.response.use(res => {
-    const token = res.headers.token
+    const token = res.headers ? res.headers.token : null
     if (token === 'empty') {
       storage.removeLocal('token')
     } else if (token) {

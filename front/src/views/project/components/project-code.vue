@@ -17,7 +17,7 @@
         <span class="project-code-path-back" @click="pathChange(-1)"></span>
       </div>
       <div v-for="(fileNode, index) in currentNodes" :key="index" class="project-code-file">
-        <type-file v-if="fileNode.type === 'folder'" :file-name="fileNode.fileName" @onFileNameClick="pathChange(index)"
+        <type-file v-if="fileNode.fileType === 'folder'" :file-name="fileNode.fileName" @onFileNameClick="pathChange(index)"
                    folder/>
         <type-file v-else :file-name="fileNode.fileName" @onFileNameClick="toShowFile"/>
       </div>
@@ -30,29 +30,7 @@ export default {
   name: 'project-code',
   data () {
     return {
-      fileNodes: [
-        {
-          type: 'folder',
-          fileName: 'src',
-          children: [
-            {
-              type: 'file',
-              fileName: 'index.js',
-              children: []
-            },
-            {
-              type: 'file',
-              fileName: 'App.vue',
-              children: []
-            }
-          ]
-        },
-        {
-          type: 'file',
-          fileName: 'vue.config.js',
-          children: []
-        }
-      ],
+      fileNodes: [],
       path: [],
       fileCode: '// code \n',
       showFileCode: false
@@ -70,6 +48,9 @@ export default {
         nodes = nodes[index].children
       }
       return pathNameList
+    },
+    projectId () {
+      return parseInt(this.$route.params.projectId, 10)
     }
   },
   methods: {
@@ -92,7 +73,18 @@ export default {
     },
     toShowFile (index = -1) {
       this.showFileCode = true
+    },
+    queryPathNodes () {
+      const params = {
+        projectId: this.projectId
+      }
+      this.$api.project.pathInfo(params).then(rep => {
+        this.fileNodes = rep.data
+      }).catch(({ msg }) => this.$message.error(msg))
     }
+  },
+  created () {
+    this.queryPathNodes()
   }
 }
 </script>
@@ -117,7 +109,7 @@ export default {
       resize: none;
       width: 100%;
       border-style: none;
-      outline:none;
+      outline: none;
     }
   }
 }

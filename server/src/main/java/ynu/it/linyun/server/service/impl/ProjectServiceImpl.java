@@ -4,16 +4,24 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import ynu.it.linyun.server.common.dto.QueryDto;
+import ynu.it.linyun.server.common.exception.BusinessException;
+import ynu.it.linyun.server.common.result.PathNode;
 import ynu.it.linyun.server.common.result.QueryResult;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.common.util.Md5;
 import ynu.it.linyun.server.entity.Project;
+import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.entity.Workspace;
+import ynu.it.linyun.server.entity.WorkspaceProjectRelation;
 import ynu.it.linyun.server.local.WorkspaceIo;
 import ynu.it.linyun.server.mapper.ProjectMapper;
 import ynu.it.linyun.server.service.ProjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import ynu.it.linyun.server.service.WorkspaceProjectRelationService;
+import ynu.it.linyun.server.service.WorkspaceService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -30,6 +38,10 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     private ProjectMapper projectMapper;
     @Autowired
     private WorkspaceIo workspaceIo;
+    @Autowired
+    private WorkspaceService workspaceService;
+    @Autowired
+    private WorkspaceProjectRelationService workspaceProjectRelationService;
 
     @Override
     public Result queryList(QueryDto queryDto) {
@@ -44,18 +56,40 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     }
 
     @Override
-    public Result add(Project project) {
-        String name = project.getName();
-        QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name", name);
-        if (getOne(queryWrapper) != null) {
-            return Result.fail("400").msg("同名项目已存在");
+    public Result add(User user, Project project, Integer workspaceId) {
+        Workspace workspace = workspaceService.getById(workspaceId);
+        if (null == workspace) {
+            throw new BusinessException("404");
         }
-        String auth = project.getAuthorityType();
-        String directoryCode = Md5.toMd5(name + auth + System.currentTimeMillis());
+        if (!workspace.getCreator().equals(user.getId())) {
+            throw new BusinessException("403");
+        }
+        String directoryCode = Md5.toMd5(project.getName() + System.currentTimeMillis());
         project.setDirectoryCode(directoryCode);
-        int id = projectMapper.insert(project);
-        project.setId(id);
+        project.setCreator(user.getId());
+        project.setCreateDate("2021-04-25");
+        projectMapper.insert(project);
+        workspaceIo.createProject(workspace, project);
+        WorkspaceProjectRelation workspaceProjectRelation = new WorkspaceProjectRelation();
+        workspaceProjectRelation.setWorkspaceId(workspaceId);
+        workspaceProjectRelation.setProjectId(project.getId());
+        workspaceProjectRelationService.saveOrUpdate(workspaceProjectRelation);
         return Result.success().data(project);
+    }
+
+    @Override
+    public Result pathInfo(User user, Integer projectId) {
+        QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
+        User finalUser = null == user ? new User() : user;
+        queryWrapper
+                .eq("id", projectId)
+                .and(i -> i.eq("authority_type", "public").or().eq("creator", finalUser.getId()));
+        Project project = getOne(queryWrapper);
+        if (null == project) {
+            throw new BusinessException("404");
+        }
+        Workspace workspace = workspaceProjectRelationService.getWorkspaceByProject(project);
+        List<PathNode> pathNodes = workspaceIo.getProjectPath(workspace, project);
+        return Result.success().data(pathNodes);
     }
 }

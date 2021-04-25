@@ -7,7 +7,7 @@
           button.label
         }}</a>
     </div>
-    <workspace-list></workspace-list>
+    <workspace-list :workspace-list="list"></workspace-list>
   </div>
 </template>
 
@@ -30,7 +30,8 @@ export default {
           key: 'private'
         }
       ],
-      activeButton: 'all'
+      activeButton: 'all',
+      list: []
     }
   },
   methods: {
@@ -39,7 +40,25 @@ export default {
         return
       }
       this.activeButton = key
+    },
+    query () {
+      const params = {
+        uid: this.uid
+      }
+      this.$api.workspace.listByUid(params)
+        .then(rep => {
+          this.list = rep.data
+        })
+        .catch(({ msg }) => this.$message.error(msg))
     }
+  },
+  computed: {
+    uid () {
+      return parseInt(this.$route.params.uid, 10)
+    }
+  },
+  created () {
+    this.query()
   }
 }
 </script>

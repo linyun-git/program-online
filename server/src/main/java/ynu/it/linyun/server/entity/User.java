@@ -34,10 +34,11 @@ public class User implements Serializable {
 
     private String name;
 
+    private String description;
+
+    private String profile = "https://picsum.photos/200/200";
     @JsonIgnore
     private String password;
-
-    private String profile;
 
 
 }

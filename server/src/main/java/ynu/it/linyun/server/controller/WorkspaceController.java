@@ -2,18 +2,23 @@ package ynu.it.linyun.server.controller;
 
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import ynu.it.linyun.server.common.dto.AddWorkspaceDto;
+import ynu.it.linyun.server.common.dto.EnvironmentDto;
 import ynu.it.linyun.server.common.dto.QueryDto;
+import ynu.it.linyun.server.common.exception.BusinessException;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.common.util.JWTUtil;
 import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.entity.Workspace;
 import ynu.it.linyun.server.service.UserService;
 import ynu.it.linyun.server.service.WorkspaceService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -37,12 +42,32 @@ public class WorkspaceController {
         return workspaceService.queryList(queryDto);
     }
 
+    @GetMapping("/list/{uid}")
+    public Result list(@PathVariable("uid") Integer uid, @RequestHeader("token") String token) {
+        User loginUser = userService.getUserByToken(token);
+        QueryWrapper<Workspace> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("creator", uid);
+        if (loginUser == null || !loginUser.getId().equals(uid)) {
+            queryWrapper.eq("authority_type", "public");
+        }
+        List<Workspace> list = workspaceService.list(queryWrapper);
+        return Result.success().data(list);
+    }
+
     @PostMapping("/add")
     public Result add(@Validated @RequestBody AddWorkspaceDto addWorkSpaceDto, @RequestHeader("token") String token) {
         User user = userService.getUserByToken(token);
         Workspace workspace = new Workspace();
         workspace.setName(addWorkSpaceDto.getName());
         workspace.setAuthorityType(addWorkSpaceDto.getAuthorityType());
-        return workspaceService.add(workspace, user);
+        workspace.setDescription(addWorkSpaceDto.getDescription());
+        List<EnvironmentDto> environments = addWorkSpaceDto.getEnvironments();
+        return workspaceService.add(user, workspace, environments);
+    }
+
+    @GetMapping("/info/{workspaceId}")
+    public Result info(@PathVariable("workspaceId") Integer workspaceId, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        return workspaceService.info(user, workspaceId);
     }
 }

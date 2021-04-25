@@ -1,15 +1,6 @@
 <template>
   <div>
     <workspace-item v-for="workspace of workspaceList" :key="workspace.id" :workspace="workspace"></workspace-item>
-    <el-pagination
-      background
-      hide-on-single-page
-      layout="prev, pager, next"
-      :current-page="page"
-      :page-size="size"
-      @current-change="onPageChange"
-      :total="count">
-    </el-pagination>
   </div>
 </template>
 
@@ -22,20 +13,7 @@ export default {
     WorkspaceItem
   },
   props: {
-    workspaceList: {
-      type: Array,
-      default () {
-        return [1, 2, 3, 4, 5, 6]
-      }
-    },
-    page: Number,
-    size: Number,
-    count: Number
-  },
-  methods: {
-    onPageChange (page) {
-      this.$emit('page-change', page)
-    }
+    workspaceList: Array
   }
 }
 </script>

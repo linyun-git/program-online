@@ -7,23 +7,17 @@
                       :rules="[{ required: true, message: '项目名称不能为空', trigger: ['blur', 'change'] }]">
           <el-input v-model="info.name"></el-input>
         </el-form-item>
-<!--        <el-form-item label="路径" prop="name"-->
-<!--                      :rules="[{ required: true, message: '项目名称不能为空', trigger: ['blur', 'change'] }]">-->
-<!--          <el-input-->
-<!--            v-model="info.directoryCode"-->
-<!--            class="input-with-select"-->
-<!--          >-->
-<!--            <template #prepend>-->
-<!--              <el-form-item>-->
-<!--                <el-select v-model="info.workspaceId">-->
-<!--                  <el-option label="餐厅名" :value="1"></el-option>-->
-<!--                  <el-option label="订单号" value="2"></el-option>-->
-<!--                  <el-option label="用户电话" value="3"></el-option>-->
-<!--                </el-select>-->
-<!--              </el-form-item>-->
-<!--            </template>-->
-<!--          </el-input>-->
-<!--        </el-form-item>-->
+        <el-form-item label="所属仓库" prop="workspaceId"
+                      :rules="[{ required: true, message: '所属仓库不能为空', trigger: ['blur', 'change'] }]">
+          <el-select v-model="info.workspaceId">
+            <el-option
+              v-for="item in workspaceList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="简介" prop="description"
                       :rules="[{ required: true, message: '项目简介不能为空', trigger: ['blur', 'change'] }]">
           <el-input type="textarea"
@@ -50,10 +44,12 @@ export default {
       info: {
         name: '',
         description: '',
-        authorityType: 'private'
+        authorityType: 'private',
+        workspaceId: null
         // directoryCode: '',
         // workspaceId: null
-      }
+      },
+      workspaceList: []
     }
   },
   methods: {
@@ -64,12 +60,14 @@ export default {
       const {
         name,
         description,
-        authorityType
+        authorityType,
+        workspaceId
       } = this.info
       this.create({
         name,
         description,
-        authorityType
+        authorityType,
+        workspaceId
       })
     },
     validate () {
@@ -92,12 +90,29 @@ export default {
         .catch(error => {
           this.$message.error(error.msg)
         })
+    },
+    queryWorkspace () {
+      const params = {
+        uid: this.$store.getters['user/userInfo'].id
+      }
+      this.$api.workspace.listByUid(params)
+        .then(rep => {
+          this.workspaceList = rep.data
+        })
+        .catch(({ msg }) => this.$message.error(msg))
     }
   },
   computed: {
     formRef () {
       return this.$refs.form
+    },
+    workspaceId () {
+      return parseInt(this.$route.query.workspace, 10)
     }
+  },
+  created () {
+    this.info.workspaceId = this.workspaceId
+    this.queryWorkspace()
   }
 }
 </script>
@@ -118,10 +133,12 @@ export default {
       margin-bottom: 22px;
     }
   }
+
   .input-with-select .el-input-group__prepend {
     background-color: #fff;
     height: 40px;
   }
+
   .el-select .el-input {
     width: 130px;
   }

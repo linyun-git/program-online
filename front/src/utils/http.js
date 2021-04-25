@@ -66,7 +66,10 @@ function post (url, params = {}, options = {}) {
 
 export { instance }
 
-export default function request (config = {}, params = {}, options = {}) {
+export default function request (config = {}, params = {}, options = {}, pathParams = {}) {
+  if (config.restful) {
+    return restful(config, params, options, pathParams)
+  }
   if (config.method === 'get') {
     return get(config.url, params, options)
   }
@@ -74,4 +77,20 @@ export default function request (config = {}, params = {}, options = {}) {
     return post(config.url, params, options)
   }
   throw Error(`不支持的方法: ${config.method}`)
+}
+
+function restful (config = {}, params = {}, options = {}, pathParams = {}) {
+  let url = config.url
+  for (const key of Object.keys(pathParams)) {
+    const value = pathParams[key]
+    // 默认两边大括号
+    const slashKey = '{' + key + '}'
+    url = url.replace(slashKey, value)
+  }
+  const newConfig = {
+    ...config,
+    url,
+    restful: false
+  }
+  return request(newConfig, params, options)
 }

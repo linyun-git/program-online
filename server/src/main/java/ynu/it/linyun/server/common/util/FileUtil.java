@@ -371,6 +371,31 @@ public class FileUtil {
     }
 
     /**
+     * 获得某一文件夹下的所有目录的路径集合
+     *
+     * @param filePath 文件夹路径
+     * @return ArrayList，其中的每个元素是一个文件的路径的字符串
+     */
+    public static ArrayList<String> getFolderPathFromFolder(String filePath) {
+        ArrayList<String> fileNames = new ArrayList<String>();
+        File file = new File(filePath);
+        try {
+            File[] tempFile = file.listFiles();
+            for (int i = 0; i < tempFile.length; i++) {
+                if (tempFile[i].isDirectory()) {
+                    String tempFileName = tempFile[i].getName();
+                    fileNames.add(makeFilePath(filePath, tempFileName));
+                }
+            }
+        } catch (Exception e) {
+            // fileNames.add("尚无文件到达！");
+            // e.printStackTrace();
+            // log4j.info("Can not find files!"+e.getMessage());
+        }
+        return fileNames;
+    }
+
+    /**
      * 递归遍历文件目录,获取所有文件路径
      *
      * @param filePath

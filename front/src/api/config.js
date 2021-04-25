@@ -27,6 +27,15 @@ export default {
       list: {
         url: '/user/list',
         method: 'post'
+      },
+      update: {
+        url: '/user/update',
+        method: 'post'
+      },
+      query: {
+        url: '/user/query/{id}',
+        method: 'get',
+        restful: true
       }
     },
     workspace: {
@@ -37,6 +46,16 @@ export default {
       list: {
         url: '/workspace/list',
         method: 'post'
+      },
+      listByUid: {
+        url: '/workspace/list/{uid}',
+        method: 'get',
+        restful: true
+      },
+      info: {
+        url: '/workspace/info/{id}',
+        method: 'get',
+        restful: true
       }
     },
     project: {
@@ -47,6 +66,11 @@ export default {
       list: {
         url: '/project/list',
         method: 'post'
+      },
+      pathInfo: {
+        url: '/project/pathInfo/{projectId}',
+        method: 'get',
+        restful: true
       }
     }
   }
