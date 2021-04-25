@@ -1,5 +1,7 @@
 package ynu.it.linyun.server.service;
 
+import ynu.it.linyun.server.entity.Project;
+import ynu.it.linyun.server.entity.Workspace;
 import ynu.it.linyun.server.entity.WorkspaceProjectRelation;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface WorkspaceProjectRelationService extends IService<WorkspaceProjectRelation> {
 
+    public Workspace getWorkspaceByProject(Project project);
 }
