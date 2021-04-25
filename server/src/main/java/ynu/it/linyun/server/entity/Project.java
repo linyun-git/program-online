@@ -41,7 +41,7 @@ public class Project implements Serializable {
     @JsonIgnore
     private String directoryCode;
 
-    @NotBlank(message = "仓库说明不允许为空")
+    @NotBlank(message = "项目说明不允许为空")
     private String description;
     @NotBlank(message = "创建人不允许为空")
     private Integer creator;

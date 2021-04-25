@@ -94,9 +94,10 @@ export default {
   .el-form-item.is-error {
     margin-bottom: 22px;
   }
-}
-label.el-form-item__label {
-  margin-right: 8px;
+
+  label.el-form-item__label {
+    margin-right: 8px;
+  }
 }
 
 </style>

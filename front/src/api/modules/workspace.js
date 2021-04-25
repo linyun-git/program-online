@@ -9,3 +9,6 @@ export const list = params => http(networkConfig.path.workspace.list, params)
 
 // 查询仓库
 export const listByUid = params => http(networkConfig.path.workspace.listByUid, {}, {}, params)
+
+// 查询仓库信息
+export const info = params => http(networkConfig.path.workspace.info, {}, {}, params)

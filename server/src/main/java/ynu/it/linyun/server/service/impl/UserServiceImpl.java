@@ -59,10 +59,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (one != null) {
             return Result.fail("400").msg("邮箱已存在");
         }
-        int id = userMapper.insert(user);
-        user.setId(id);
+        userMapper.insert(user);
         Map<String, String> map = new HashMap<>();
-        map.put("id", Integer.toString(id));
+        map.put("id", Integer.toString(user.getId()));
         response.setHeader("Access-Control-Expose-Headers", "token");
         response.setHeader("token", JWTUtil.generateToken(map));
         return Result.success().data(user);

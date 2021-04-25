@@ -1,6 +1,6 @@
 export default {
-  baseURL: 'http://localhost:9000',
-  // baseURL: 'http://service.explosion.red',
+  // baseURL: 'http://localhost:9000',
+  baseURL: 'http://service.explosion.red',
   timeout: 5000,
   headers: {
     'Access-Control-Allow-Origin': '*',
@@ -51,6 +51,11 @@ export default {
         url: '/workspace/list/{uid}',
         method: 'get',
         restful: true
+      },
+      info: {
+        url: '/workspace/info/{id}',
+        method: 'get',
+        restful: true
       }
     },
     project: {
@@ -61,6 +66,11 @@ export default {
       list: {
         url: '/project/list',
         method: 'post'
+      },
+      pathInfo: {
+        url: '/project/pathInfo/{projectId}',
+        method: 'get',
+        restful: true
       }
     }
   }

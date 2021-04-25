@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :model="form" status-icon :rules="rules" ref="form" label-width="100px" class="demo-ruleForm">
+    <el-form :model="form" status-icon :rules="rules" ref="form" label-width="100px">
       <el-form-item label="头像" prop="profile">
         <el-upload
           class="avatar-uploader"

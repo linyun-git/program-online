@@ -1,12 +1,12 @@
 <template>
   <div class="workspace-header-body">
     <div class="main-container">
-      <h3 style="margin: 0">Dev Workspace</h3>
+      <h3 style="margin: 0">{{ creator.name }} / {{ workspace.name }}</h3>
       <div class="tab-container">
         <a class="tab-button" :class="{active: type === 'project'}" @click="typeTo('project')">项目
           <el-tag>{{ count }}</el-tag>
         </a>
-        <a class="tab-button" :class="{active: type === 'manage'}" @click="typeTo('manage')">管理</a>
+        <a class="tab-button" v-if="isSelf" :class="{active: type === 'manage'}" @click="typeTo('manage')">管理</a>
       </div>
     </div>
   </div>
@@ -15,6 +15,10 @@
 <script>
 export default {
   name: 'workspace-header',
+  props: {
+    workspace: Object,
+    creator: Object
+  },
   data () {
     return {
       count: 10
@@ -26,6 +30,9 @@ export default {
     },
     workspaceId () {
       return this.$route.params.workspaceId
+    },
+    isSelf () {
+      return this.creator.id === this.$store.getters['user/userInfo'].id
     }
   },
   methods: {

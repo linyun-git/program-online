@@ -41,9 +41,9 @@ export default {
     return {
       activeName: 'workspace',
       info: {
-        name: '姓名',
-        profile: 'https://picsum.photos/200/200',
-        description: '这个人很懒，什么也没写'
+        name: null,
+        profile: null,
+        description: null
       }
     }
   },

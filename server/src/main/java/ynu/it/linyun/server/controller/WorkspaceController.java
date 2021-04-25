@@ -8,7 +8,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import ynu.it.linyun.server.common.dto.AddWorkspaceDto;
+import ynu.it.linyun.server.common.dto.EnvironmentDto;
 import ynu.it.linyun.server.common.dto.QueryDto;
+import ynu.it.linyun.server.common.exception.BusinessException;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.common.util.JWTUtil;
 import ynu.it.linyun.server.entity.User;
@@ -58,6 +60,14 @@ public class WorkspaceController {
         Workspace workspace = new Workspace();
         workspace.setName(addWorkSpaceDto.getName());
         workspace.setAuthorityType(addWorkSpaceDto.getAuthorityType());
-        return workspaceService.add(workspace, user);
+        workspace.setDescription(addWorkSpaceDto.getDescription());
+        List<EnvironmentDto> environments = addWorkSpaceDto.getEnvironments();
+        return workspaceService.add(user, workspace, environments);
+    }
+
+    @GetMapping("/info/{workspaceId}")
+    public Result info(@PathVariable("workspaceId") Integer workspaceId, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        return workspaceService.info(user, workspaceId);
     }
 }
