@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <project-code v-show="type === 'code'"></project-code>
+    <project-code :project="project" v-show="type === 'code'"></project-code>
     <project-manage v-show="type === 'manage'"></project-manage>
   </div>
 </template>
@@ -14,6 +14,9 @@ export default {
   components: {
     ProjectCode,
     ProjectManage
+  },
+  props: {
+    project: Object
   },
   computed: {
     type () {

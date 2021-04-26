@@ -71,6 +71,19 @@ export default {
         url: '/project/pathInfo/{projectId}',
         method: 'get',
         restful: true
+      },
+      fileContent: {
+        url: '/project/fileContent',
+        method: 'post'
+      },
+      saveFile: {
+        url: '/project/saveFile',
+        method: 'post'
+      },
+      info: {
+        url: '/project/info/{projectId}',
+        method: 'get',
+        restful: true
       }
     }
   }

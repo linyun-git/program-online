@@ -78,18 +78,57 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     }
 
     @Override
-    public Result pathInfo(User user, Integer projectId) {
+    public Project getProject(User user, Integer projectId) {
         QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
         User finalUser = null == user ? new User() : user;
         queryWrapper
                 .eq("id", projectId)
                 .and(i -> i.eq("authority_type", "public").or().eq("creator", finalUser.getId()));
-        Project project = getOne(queryWrapper);
+        return getOne(queryWrapper);
+    }
+
+    @Override
+    public Result pathInfo(User user, Integer projectId) {
+        Project project = getProject(user, projectId);
         if (null == project) {
             throw new BusinessException("404");
         }
         Workspace workspace = workspaceProjectRelationService.getWorkspaceByProject(project);
         List<PathNode> pathNodes = workspaceIo.getProjectPath(workspace, project);
         return Result.success().data(pathNodes);
+    }
+
+    @Override
+    public Result info(User user, Integer projectId) {
+        Project project = getProject(user, projectId);
+        if (null == project) {
+            throw new BusinessException("404");
+        }
+        return Result.success().data(project);
+    }
+
+    @Override
+    public Result fileContent(User user, Integer projectId, String path) {
+        Project project = getProject(user, projectId);
+        if (null == project) {
+            throw new BusinessException("404");
+        }
+        Workspace workspace = workspaceProjectRelationService.getWorkspaceByProject(project);
+        String content = workspaceIo.getProjectFile(workspace, project, path);
+        return Result.success().data(content);
+    }
+
+    @Override
+    public Result saveFile(User user, Integer projectId, String path, String content) {
+        QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
+        User finalUser = null == user ? new User() : user;
+        queryWrapper.eq("id", projectId).eq("creator", finalUser.getId());
+        Project project = getOne(queryWrapper);
+        if (null == project) {
+            throw new BusinessException("404");
+        }
+        Workspace workspace = workspaceProjectRelationService.getWorkspaceByProject(project);
+        workspaceIo.saveProjectFile(workspace, project, path, content);
+        return Result.success();
     }
 }

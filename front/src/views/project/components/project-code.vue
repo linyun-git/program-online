@@ -1,8 +1,10 @@
 <template>
   <el-card class="project-code-body" shadow="never">
     <div class="project-code-header">
-      ProjectName
-      <span v-for="(fileName) in currentPath" :key="fileName">/{{ fileName }}</span>
+      <span class="history-path" @click="pathDeepTo(0)">{{ project.name }}</span>
+      <span class="history-path" v-for="(fileName, index) in currentPath" :key="fileName"
+            @click="pathDeepTo(index + 1)">/{{ fileName }}</span>
+      <span v-if="showFileCode">/{{ showFileName }}</span>
     </div>
     <div v-if="showFileCode" class="project-code-file-code">
       <el-input
@@ -17,9 +19,10 @@
         <span class="project-code-path-back" @click="pathChange(-1)"></span>
       </div>
       <div v-for="(fileNode, index) in currentNodes" :key="index" class="project-code-file">
-        <type-file v-if="fileNode.fileType === 'folder'" :file-name="fileNode.fileName" @onFileNameClick="pathChange(index)"
+        <type-file v-if="fileNode.fileType === 'folder'" :file-name="fileNode.fileName"
+                   @onFileNameClick="pathChange(index)"
                    folder/>
-        <type-file v-else :file-name="fileNode.fileName" @onFileNameClick="toShowFile"/>
+        <type-file v-else :file-name="fileNode.fileName" @onFileNameClick="toShowFile(index)"/>
       </div>
     </template>
   </el-card>
@@ -28,12 +31,16 @@
 <script>
 export default {
   name: 'project-code',
+  props: {
+    project: Object
+  },
   data () {
     return {
       fileNodes: [],
       path: [],
-      fileCode: '// code \n',
-      showFileCode: false
+      fileCode: '',
+      showFileCode: false,
+      showFileName: null
     }
   },
   computed: {
@@ -64,6 +71,16 @@ export default {
       const [, ...newPath] = path
       return this.getNodes(newPath, nodes[path[0]].children)
     },
+    pathDeepTo (index) {
+      while (this.currentPath.length > index) {
+        this.path.pop()
+      }
+      if (this.showFileCode) {
+        this.showFileCode = false
+        this.showFileName = null
+        this.fileCode = ''
+      }
+    },
     pathChange (index = -1) {
       if (index === -1) {
         this.path.pop()
@@ -72,7 +89,13 @@ export default {
       this.path.push(index)
     },
     toShowFile (index = -1) {
-      this.showFileCode = true
+      const currentFileName = this.currentNodes[index].fileName
+      const filePath = this.currentPath.join('/') + '/' + currentFileName
+      this.queryContent(this.projectId, filePath).then(content => {
+        this.fileCode = content
+        this.showFileCode = true
+        this.showFileName = currentFileName
+      }).catch(err => this.$message.error(err))
     },
     queryPathNodes () {
       const params = {
@@ -81,6 +104,13 @@ export default {
       this.$api.project.pathInfo(params).then(rep => {
         this.fileNodes = rep.data
       }).catch(({ msg }) => this.$message.error(msg))
+    },
+    queryContent (projectId, path) {
+      const params = {
+        projectId,
+        path
+      }
+      return this.$api.project.fileContent(params).then(rep => rep.data).catch(err => err.msg)
     }
   },
   created () {
@@ -125,6 +155,11 @@ export default {
     padding: 5px 10px;
     display: flex;
     align-items: center;
+
+    .history-path {
+      cursor: pointer;
+      margin-right: 2px;
+    }
   }
 
   .project-code-file {

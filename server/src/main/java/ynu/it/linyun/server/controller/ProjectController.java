@@ -6,7 +6,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import ynu.it.linyun.server.common.dto.AddProjectDto;
+import ynu.it.linyun.server.common.dto.FileContentDto;
 import ynu.it.linyun.server.common.dto.QueryDto;
+import ynu.it.linyun.server.common.dto.SaveFileDto;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.entity.Project;
 import ynu.it.linyun.server.entity.User;
@@ -50,5 +52,23 @@ public class ProjectController {
     public Result pathInfo(@PathVariable("id") Integer id, @RequestHeader("token") String token) {
         User user = userService.getUserByToken(token);
         return projectService.pathInfo(user, id);
+    }
+
+    @GetMapping("/info/{id}")
+    public Result info(@PathVariable("id") Integer id, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        return projectService.info(user, id);
+    }
+
+    @PostMapping("/fileContent")
+    public Result fileContent(@Validated @RequestBody FileContentDto fileContentDto, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        return projectService.fileContent(user, fileContentDto.getProjectId(), fileContentDto.getPath());
+    }
+
+    @PostMapping("/saveFile")
+    public Result writeFile(@Validated @RequestBody SaveFileDto saveFileDto, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        return projectService.saveFile(user, saveFileDto.getProjectId(), saveFileDto.getPath(), saveFileDto.getContent());
     }
 }

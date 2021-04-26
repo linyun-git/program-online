@@ -68,6 +68,10 @@ export default {
       this.editor.onDidChangeModelContent(event =>
         this.codeChangeHandler(editor, event)
       )
+      this.editor.onDidFocusEditorText(event => this.$emit('focus', event))
+      this.editor.addCommand(this.monaco.KeyMod.CtrlCmd | this.monaco.KeyCode.KEY_S, () => {
+        this.onSave()
+      })
       this.$emit('mounted', editor)
     },
     codeChangeHandler: function (editor) {
@@ -94,6 +98,9 @@ export default {
       if (typeof this.editor !== 'undefined') {
         this.editor.dispose()
       }
+    },
+    onSave () {
+      this.$emit('save')
     }
   }
 }

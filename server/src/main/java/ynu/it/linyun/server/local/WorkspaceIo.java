@@ -19,7 +19,7 @@ public class WorkspaceIo {
     }
 
     public void createWorkspace(Workspace workspace) {
-        String subPath = workspace.getDirectoryCode();
+        String subPath = "/" + workspace.getDirectoryCode();
         MyFileUtil.newFolder(createPath(subPath));
     }
 
@@ -43,16 +43,30 @@ public class WorkspaceIo {
     private List<PathNode> deepPathNodes(String rootPath) {
         List<PathNode> pathNodes = new ArrayList<>();
         List<String> folders = MyFileUtil.getFolderNameFromFolder(rootPath);
-        for (var folder: folders) {
+        for (var folder : folders) {
             PathNode pathNode = new PathNode(folder, "folder");
             pathNode.setChildren(deepPathNodes(rootPath + "/" + folder));
             pathNodes.add(pathNode);
         }
         List<String> files = MyFileUtil.getFileNameFromFolder(rootPath);
-        for (var file: files) {
+        for (var file : files) {
             PathNode pathNode = new PathNode(file, "file");
             pathNodes.add(pathNode);
         }
         return pathNodes;
+    }
+
+    // 获取文件内容
+    public String getProjectFile(Workspace workspace, Project project, String path) {
+        String subPath = "/" + workspace.getDirectoryCode() + "/" + project.getDirectoryCode() + "/" + path;
+        String rootPath = createPath(subPath);
+        return MyFileUtil.readFile(rootPath);
+    }
+
+    // 写入文件内容
+    public void saveProjectFile(Workspace workspace, Project project, String path, String content) {
+        String subPath = "/" + workspace.getDirectoryCode() + "/" + project.getDirectoryCode() + "/" + path;
+        String rootPath = createPath(subPath);
+        MyFileUtil.writeFile(rootPath, content);
     }
 }

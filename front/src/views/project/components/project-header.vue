@@ -1,7 +1,7 @@
 <template>
   <div class="workspace-header-body">
     <div class="main-container">
-      <h3 style="margin: 0">白风 / Project Name</h3>
+      <h3 style="margin: 0">{{ creator.name }} / {{ project.name }}</h3>
       <div class="tab-container">
         <a class="tab-button" :class="{active: type === 'code'}" @click="typeTo('code')">代码
           <el-tag>{{ count }}</el-tag>
@@ -15,6 +15,10 @@
 <script>
 export default {
   name: 'project-header',
+  props: {
+    project: Object,
+    creator: Object
+  },
   data () {
     return {
       count: 10

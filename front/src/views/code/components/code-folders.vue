@@ -1,18 +1,11 @@
 <template>
-  <div class="code-folders-body">
-    <el-tree
-      :data="data"
-      node-key="id"
-      default-expand-all
-      @node-drag-start="handleDragStart"
-      @node-drag-enter="handleDragEnter"
-      @node-drag-leave="handleDragLeave"
-      @node-drag-over="handleDragOver"
-      @node-drag-end="handleDragEnd"
-      @node-drop="handleDrop"
-      draggable
-      :allow-drop="allowDrop"
-      :allow-drag="allowDrag">
+  <div class="code-folders-body" @contextmenu.prevent.stop="onRightClick">
+    <el-tree :data="fileNodes" @node-click="onNodeClick">
+      <template #default="{ data }">
+        <type-file v-if="data.fileType === 'folder'" :file-name="data.fileName"
+                   folder/>
+        <type-file v-else :file-name="data.fileName"/>
+      </template>
     </el-tree>
   </div>
 </template>
@@ -20,54 +13,67 @@
 <script>
 export default {
   name: 'code-folders',
+  props: {
+    projectId: Number
+  },
   data () {
     return {
-      data: [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 6,
-          label: '二级 2-2'
-        }]
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 7,
-          label: '二级 3-1'
-        }, {
-          id: 8,
-          label: '二级 3-2',
-          children: [{
-            id: 11,
-            label: '三级 3-2-1'
-          }, {
-            id: 12,
-            label: '三级 3-2-2'
-          }, {
-            id: 13,
-            label: '三级 3-2-3'
-          }]
-        }]
-      }]
+      fileNodes: [],
+      project: {}
     }
+  },
+  methods: {
+    onRightClick () {
+    },
+    queryPath () {
+      const params = {
+        projectId: this.projectId
+      }
+      this.$api.project.pathInfo(params).then(rep => {
+        this.appendNodes(rep.data)
+      }).catch(({ msg }) => this.$message.error(msg))
+    },
+    queryInfo () {
+      const params = {
+        projectId: this.projectId
+      }
+      return this.$api.project.info(params).then(rep => {
+        this.project = rep.data
+      }).catch(({ msg }) => this.$message.error(msg))
+    },
+    appendNodes (fileNodes) {
+      this.fileNodes = [
+        {
+          fileName: this.project.name,
+          fileType: 'folder',
+          filePath: '',
+          children: fileNodes
+        }
+      ]
+    },
+    onNodeClick (fileNode) {
+      if (fileNode.fileType === 'file') {
+        this.editFile(fileNode)
+      }
+      this.$emit('node-click', fileNode)
+    },
+    editFile (fileNode) {
+      const {
+        fileName,
+        fileType,
+        filePath
+      } = fileNode
+      this.$emit('edit-file', {
+        fileName,
+        fileType,
+        filePath
+      })
+    }
+  },
+  created () {
+    this.queryInfo().then(() => {
+      this.queryPath()
+    })
   }
 }
 </script>
