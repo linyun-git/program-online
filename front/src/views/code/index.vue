@@ -4,13 +4,14 @@
       <code-header></code-header>
     </div>
     <div class="top-container">
-      <code-path></code-path>
+      <code-path :path-list="pathList"></code-path>
     </div>
     <div class="bottom-container">
       <div class="folders-container">
-        <code-folders></code-folders>
+        <code-folders :project-id="projectId" @edit-file="onEditFile" @node-click="onPathChange"></code-folders>
       </div>
-      <code-editor-tabs class="editor-container"></code-editor-tabs>
+      <code-editor-tabs :project-id="projectId" class="editor-container" @editor-focus="onPathChange"
+                        ref="codeEditorTabs"></code-editor-tabs>
     </div>
   </div>
 </template>
@@ -28,6 +29,40 @@ export default {
     CodeHeader,
     CodeFolders,
     CodeEditorTabs
+  },
+  data () {
+    return {
+      pathList: [],
+      project: {}
+    }
+  },
+  computed: {
+    projectId () {
+      return parseInt(this.$route.params.projectId, 10)
+    }
+  },
+  methods: {
+    onEditFile (fileNode) {
+      this.$refs.codeEditorTabs.toEdit(fileNode)
+    },
+    onPathChange (fileNode) {
+      const path = fileNode.filePath.split('/')
+      path.unshift(this.project.name)
+      this.pathList = path
+    },
+    queryInfo () {
+      const params = {
+        projectId: this.projectId
+      }
+      return this.$api.project.info(params).then(rep => {
+        this.project = rep.data
+      }).catch(({ msg }) => this.$message.error(msg))
+    }
+  },
+  created () {
+    this.queryInfo().then(() => {
+      this.pathList = [this.project.name]
+    })
   }
 }
 </script>

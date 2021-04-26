@@ -1,5 +1,6 @@
 <template>
-  <monaco-editor :code="code" @update:code="$emit('update:code', $event)" :theme="theme" :language="language"
+  <monaco-editor :code="code" @update:code="$emit('update:code', $event)"
+                 :theme="theme" :language="language"
                  :editorOptions="options" :srcPath="srcPath"></monaco-editor>
 </template>
 
@@ -21,11 +22,6 @@ export default {
       editor: null,
       options: {},
       srcPath: '/monaco-editor/min'
-    }
-  },
-  methods: {},
-  watch: {
-    code (value) {
     }
   }
 }

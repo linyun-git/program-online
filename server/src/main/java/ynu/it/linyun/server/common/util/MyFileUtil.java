@@ -1,6 +1,6 @@
 package ynu.it.linyun.server.common.util;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -150,5 +150,71 @@ public class MyFileUtil {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 读取文本文件内容
+     *
+     * @param filePath 文件路径
+     * @return 文本文件内容
+     */
+    public static String readFile(String filePath) {
+        File file = new File(filePath);
+        BufferedReader reader = null;
+        StringBuilder sbf = new StringBuilder();
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String tempStr;
+            while ((tempStr = reader.readLine()) != null) {
+                sbf.append(tempStr).append('\n');
+            }
+            reader.close();
+            return sbf.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        return sbf.toString();
+    }
+
+    /**
+     * 用所给内容覆盖文件原有内容
+     * @param filePath 文件路径
+     * @param content 新的文件内容
+     */
+    public static void writeFile(String filePath, String content) {
+        writeFile(filePath, content, false);
+    }
+
+    /**
+     * 向文件中写入内容
+     * @param filePath 文件路径
+     * @param content 要写入的内容
+     * @param append 是否保留原有内容
+     */
+    public static void writeFile(String filePath, String content, boolean append) {
+        File file = new File(filePath);
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file, append));
+            writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
     }
 }

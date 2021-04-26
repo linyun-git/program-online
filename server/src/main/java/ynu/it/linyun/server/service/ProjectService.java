@@ -21,4 +21,12 @@ public interface ProjectService extends IService<Project> {
     public Result add(User user, Project project, Integer workspaceId);
 
     public Result pathInfo(User user, Integer projectId);
+
+    public Project getProject(User user, Integer projectId);
+
+    public Result info(User user, Integer projectId);
+
+    public Result fileContent(User user, Integer projectId, String path);
+
+    public Result saveFile(User user, Integer projectId, String path, String content);
 }
