@@ -15,7 +15,8 @@ import java.util.List;
  * @since 2021-05-07-15:36
  */
 public class DockerSocket extends BinaryWebSocketHandler {
-    private static final String WS_URI = "ws://192.168.66.131:2375/containers/{containerId}/attach/ws?logs=0&stream=1&stdin=1&stdout=1&stderr=1";
+//    private static final String WS_URI = "ws://192.168.66.131:2375/containers/{containerId}/attach/ws?logs=0&stream=1&stdin=1&stdout=1&stderr=1";
+    private static final String WS_URI = "ws://127.0.0.1:2375/containers/{containerId}/attach/ws?logs=0&stream=1&stdin=1&stdout=1&stderr=1";
     private final SocketConnector socketConnector;
     private final List<ByteBuffer> messageStack= new ArrayList<>();
 
