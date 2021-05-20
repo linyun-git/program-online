@@ -13,7 +13,7 @@ import ynu.it.linyun.server.entity.Project;
 import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.entity.Workspace;
 import ynu.it.linyun.server.entity.WorkspaceProjectRelation;
-import ynu.it.linyun.server.local.WorkspaceIo;
+import ynu.it.linyun.server.local.ProjectIo;
 import ynu.it.linyun.server.mapper.ProjectMapper;
 import ynu.it.linyun.server.service.ProjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -36,8 +36,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Autowired
     private ProjectMapper projectMapper;
-    @Autowired
-    private WorkspaceIo workspaceIo;
+
+    private final ProjectIo projectIo = ProjectIo.createProjectIo();
     @Autowired
     private WorkspaceService workspaceService;
     @Autowired
@@ -69,7 +69,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         project.setCreator(user.getId());
         project.setCreateDate("2021-04-25");
         projectMapper.insert(project);
-        workspaceIo.createProject(workspace, project);
+        projectIo.createProject(project);
         WorkspaceProjectRelation workspaceProjectRelation = new WorkspaceProjectRelation();
         workspaceProjectRelation.setWorkspaceId(workspaceId);
         workspaceProjectRelation.setProjectId(project.getId());
@@ -93,8 +93,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         if (null == project) {
             throw new BusinessException("404");
         }
-        Workspace workspace = workspaceProjectRelationService.getWorkspaceByProject(project);
-        List<PathNode> pathNodes = workspaceIo.getProjectPath(workspace, project);
+        List<PathNode> pathNodes = projectIo.getProjectPath(project);
         return Result.success().data(pathNodes);
     }
 
@@ -113,8 +112,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         if (null == project) {
             throw new BusinessException("404");
         }
-        Workspace workspace = workspaceProjectRelationService.getWorkspaceByProject(project);
-        String content = workspaceIo.getProjectFile(workspace, project, path);
+        String content = projectIo.getProjectFile(project, path);
         return Result.success().data(content);
     }
 
@@ -127,8 +125,41 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         if (null == project) {
             throw new BusinessException("404");
         }
-        Workspace workspace = workspaceProjectRelationService.getWorkspaceByProject(project);
-        workspaceIo.saveProjectFile(workspace, project, path, content);
+        projectIo.saveProjectFile(project, path, content);
+        return Result.success();
+    }
+
+    @Override
+    public Result createFile(User user, Integer projectId, String path, String fileType) {
+        QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
+        User finalUser = null == user ? new User() : user;
+        queryWrapper.eq("id", projectId).eq("creator", finalUser.getId());
+        Project project = getOne(queryWrapper);
+        if (null == project) {
+            throw new BusinessException("404");
+        }
+        if ("file".equals(fileType)) {
+            projectIo.createProjectFile(project, path);
+        } else if ("folder".equals(fileType)) {
+            projectIo.createProjectFolder(project, path);
+        }
+        return Result.success();
+    }
+
+    @Override
+    public Result deleteFile(User user, Integer projectId, String path, String fileType) {
+        QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
+        User finalUser = null == user ? new User() : user;
+        queryWrapper.eq("id", projectId).eq("creator", finalUser.getId());
+        Project project = getOne(queryWrapper);
+        if (null == project) {
+            throw new BusinessException("404");
+        }
+        if ("file".equals(fileType)) {
+            projectIo.deleteProjectFile(project, path);
+        } else if ("folder".equals(fileType)) {
+            projectIo.deleteProjectFolder(project, path);
+        }
         return Result.success();
     }
 }

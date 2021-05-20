@@ -27,18 +27,36 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 主键
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    /**
+     * 邮箱
+     */
     private String email;
 
+    /**
+     * 昵称
+     */
     private String name;
 
+    /**
+     * 个人简介
+     */
     private String description;
 
+    /**
+     * 头像请求路径
+     */
     private String profile = "https://picsum.photos/200/200";
+
+    /**
+     * 密码
+     */
     @JsonIgnore
     private String password;
-
 
 }

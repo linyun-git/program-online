@@ -41,6 +41,15 @@ const routes = [
     }
   },
   {
+    path: '/terminal/:projectId',
+    component: () => import('@/views/terminal'),
+    meta: {
+      loginResolve: true,
+      title: 'terminal',
+      name: 'terminal'
+    }
+  },
+  {
     path: '/page-not-found',
     component: () => import('@/views/error-page/page-not-found')
   },

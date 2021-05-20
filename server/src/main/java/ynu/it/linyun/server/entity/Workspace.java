@@ -38,9 +38,6 @@ public class Workspace implements Serializable {
     @Pattern(regexp = "(private)|(public)", message = "仓库权限控制不正确")
     private String authorityType;
 
-    @JsonIgnore
-    private String directoryCode;
-
     @NotBlank(message = "仓库说明不允许为空")
     private String description;
     @NotBlank(message = "创建人不允许为空")

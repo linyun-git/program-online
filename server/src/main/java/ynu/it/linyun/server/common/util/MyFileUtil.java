@@ -185,9 +185,81 @@ public class MyFileUtil {
     }
 
     /**
+     * 按路径建立文件，如已有相同路径的文件则不建立。
+     *
+     * @param filePath 要建立文件的路径。
+     * @return 表示此文件的File对象。
+     * @throws IOException 如路径是目录或建文件时出错抛异常。
+     */
+    public static File createFile(String filePath) {
+        File file = new File(filePath);
+        if (file.isFile())
+            return file;
+        if (filePath.endsWith("/") || filePath.endsWith("\\"))
+            try {
+                throw new IOException(filePath + " is a directory");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        String dirPath = extractDirPath(filePath); // 文件所在目录的路径
+
+        if (dirPath != null) { // 如文件所在目录不存在则先建目录
+            createFolder(dirPath);
+        }
+
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // log4j.info("Folder has been created: " + filePath);
+        // System.out.println("文件已创建: " + filePath);
+        return file;
+    }
+
+    /**
+     * 从文件路径中提取目录路径，如果文件路径不含目录返回null。
+     *
+     * @param filePath 文件路径。
+     * @return 目录路径，不以'/'或操作系统的文件分隔符结尾。
+     */
+    public static String extractDirPath(String filePath) {
+        int separatePos = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\')); // 分隔目录和文件名的位置
+        return separatePos == -1 ? null : filePath.substring(0, separatePos);
+    }
+
+    /**
+     * 新建目录,支持建立多级目录
+     *
+     * @param folderPath 新建目录的路径字符串
+     * @return boolean, 如果目录创建成功返回true, 否则返回false
+     */
+    public static boolean createFolder(String folderPath) {
+        try {
+            File myFilePath = new File(folderPath);
+            if (!myFilePath.exists()) {
+                myFilePath.mkdirs();
+                // System.out.println("新建目录为：" + folderPath);
+                // log4j.info("Create new folder：" + folderPath);
+            } else {
+                // System.out.println("目录已经存在: " + folderPath);
+                // log4j.info("Folder is existed：" + folderPath);
+            }
+        } catch (Exception e) {
+            // System.out.println("新建目录操作出错");
+            e.printStackTrace();
+            // log4j.error("Create new folder error: " + folderPath);
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 用所给内容覆盖文件原有内容
+     *
      * @param filePath 文件路径
-     * @param content 新的文件内容
+     * @param content  新的文件内容
      */
     public static void writeFile(String filePath, String content) {
         writeFile(filePath, content, false);
@@ -195,9 +267,10 @@ public class MyFileUtil {
 
     /**
      * 向文件中写入内容
+     *
      * @param filePath 文件路径
-     * @param content 要写入的内容
-     * @param append 是否保留原有内容
+     * @param content  要写入的内容
+     * @param append   是否保留原有内容
      */
     public static void writeFile(String filePath, String content, boolean append) {
         File file = new File(filePath);

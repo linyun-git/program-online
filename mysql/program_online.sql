@@ -20,7 +20,6 @@ create table if not exists workspace(
     name varchar(50) not null,
     description varchar(250) not null,
     authority_type enum('public', 'private') not null,
-    directory_code varchar(50) not null unique,
     creator integer not null,
     create_date varchar(50) not null,
     foreign key(creator) references user(id)
@@ -38,6 +37,13 @@ create table if not exists project(
     foreign key(creator) references user(id)
 );
 
+# 创建环境表
+create table if not exists environment(
+    id integer primary key auto_increment,
+    name varchar(50) not null,
+    image varchar(50) not null
+);
+
 # 创建仓库-项目关系表
 create table if not exists workspace_project_relation(
     id integer primary key auto_increment,
@@ -51,9 +57,9 @@ create table if not exists workspace_project_relation(
 create table if not exists workspace_environment_relation(
     id integer primary key auto_increment,
     workspace_id integer not null,
-    environment_name varchar(20) not null,
-    environment_version varchar(20) not null,
-    foreign key(workspace_id) references workspace(id)
+    environment_id integer not null,
+    foreign key(workspace_id) references workspace(id),
+    foreign key(environment_id ) references environment(id)
 );
 
 # 创建用户-仓库权限关系表

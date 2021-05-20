@@ -11,7 +11,6 @@ export const list = params => http(networkConfig.path.project.list, params)
 export const pathInfo = params => http(networkConfig.path.project.pathInfo, {}, {}, params)
   .then(rep => {
     fillPath(rep.data)
-    console.log(rep.data)
     return rep
   })
 
@@ -23,6 +22,12 @@ export const saveFile = params => http(networkConfig.path.project.saveFile, para
 
 // 查询项目信息
 export const info = params => http(networkConfig.path.project.info, {}, {}, params)
+
+// 查询文件内容
+export const createFile = params => http(networkConfig.path.project.createFile, params)
+
+// 查询文件内容
+export const deleteFile = params => http(networkConfig.path.project.deleteFile, params)
 
 // 填充每个文件对应的路径
 const fillPath = (fileNodes, prefixPath) => {

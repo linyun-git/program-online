@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import ynu.it.linyun.server.common.dto.AddProjectDto;
-import ynu.it.linyun.server.common.dto.FileContentDto;
-import ynu.it.linyun.server.common.dto.QueryDto;
-import ynu.it.linyun.server.common.dto.SaveFileDto;
+import ynu.it.linyun.server.common.dto.*;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.entity.Project;
 import ynu.it.linyun.server.entity.User;
@@ -70,5 +67,17 @@ public class ProjectController {
     public Result writeFile(@Validated @RequestBody SaveFileDto saveFileDto, @RequestHeader("token") String token) {
         User user = userService.getUserByToken(token);
         return projectService.saveFile(user, saveFileDto.getProjectId(), saveFileDto.getPath(), saveFileDto.getContent());
+    }
+
+    @PostMapping("/createFile")
+    public Result createFile(@Validated @RequestBody UpdateFileDto updateFileDto, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        return projectService.createFile(user, updateFileDto.getProjectId(), updateFileDto.getPath(), updateFileDto.getFileType());
+    }
+
+    @PostMapping("/deleteFile")
+    public Result deleteFile(@Validated @RequestBody UpdateFileDto updateFileDto, @RequestHeader("token") String token) {
+        User user = userService.getUserByToken(token);
+        return projectService.deleteFile(user, updateFileDto.getProjectId(), updateFileDto.getPath(), updateFileDto.getFileType());
     }
 }

@@ -65,7 +65,7 @@ export default {
       this.$router.push('/workspace')
     },
     onMySpace () {
-      this.$router.push('/space/1')
+      this.$router.push(`/space/${this.$store.getters['user/userInfo'].id}`)
     },
     logout () {
       this.$api.user.logout().then(() => {
