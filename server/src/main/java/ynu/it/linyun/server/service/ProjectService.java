@@ -29,4 +29,8 @@ public interface ProjectService extends IService<Project> {
     public Result fileContent(User user, Integer projectId, String path);
 
     public Result saveFile(User user, Integer projectId, String path, String content);
+
+    public Result createFile(User user, Integer projectId, String path, String fileType);
+
+    public Result deleteFile(User user, Integer projectId, String path, String fileType);
 }

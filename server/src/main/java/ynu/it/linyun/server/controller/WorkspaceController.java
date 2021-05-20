@@ -13,8 +13,10 @@ import ynu.it.linyun.server.common.dto.QueryDto;
 import ynu.it.linyun.server.common.exception.BusinessException;
 import ynu.it.linyun.server.common.result.Result;
 import ynu.it.linyun.server.common.util.JWTUtil;
+import ynu.it.linyun.server.entity.Environment;
 import ynu.it.linyun.server.entity.User;
 import ynu.it.linyun.server.entity.Workspace;
+import ynu.it.linyun.server.service.EnvironmentService;
 import ynu.it.linyun.server.service.UserService;
 import ynu.it.linyun.server.service.WorkspaceService;
 
@@ -36,6 +38,8 @@ public class WorkspaceController {
     private WorkspaceService workspaceService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EnvironmentService environmentService;
 
     @PostMapping("/list")
     public Result list(@RequestBody QueryDto queryDto) {
@@ -61,8 +65,8 @@ public class WorkspaceController {
         workspace.setName(addWorkSpaceDto.getName());
         workspace.setAuthorityType(addWorkSpaceDto.getAuthorityType());
         workspace.setDescription(addWorkSpaceDto.getDescription());
-        List<EnvironmentDto> environments = addWorkSpaceDto.getEnvironments();
-        return workspaceService.add(user, workspace, environments);
+        Environment environment = environmentService.getById(addWorkSpaceDto.getEnvironmentId());
+        return workspaceService.add(user, workspace, environment);
     }
 
     @GetMapping("/info/{workspaceId}")

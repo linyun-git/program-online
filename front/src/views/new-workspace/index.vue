@@ -12,13 +12,24 @@
           <el-input type="textarea"
                     :autosize="{ minRows: 2, maxRows: 4}" v-model="info.description"></el-input>
         </el-form-item>
-        <div>
-          <p class="label required-label">环境</p>
-          <environment-form v-for="(environment, index) in info.environments" :key="environment.key"
-                            :hide-delete="index === 0" :ref="addRef"
-                            v-model:enviroment="info.environments[index]" @delete="onDelete(index)"></environment-form>
-          <el-button type="text" @click="onAddEnvironment">添加环境</el-button>
-        </div>
+        <el-form-item label="选择环境" prop="environmentId"
+                      :rules="[{ required: true, message: '仓库环境不能为空', trigger: ['blur', 'change'] }]">
+          <el-select v-model="info.environmentId">
+            <el-option
+              v-for="item in environmentList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <!--        <div>-->
+        <!--          <p class="label required-label">环境</p>-->
+        <!--          <environment-form v-for="(environment, index) in info.environments" :key="environment.key"-->
+        <!--                            :hide-delete="index === 0" :ref="addRef"-->
+        <!--                            v-model:enviroment="info.environments[index]" @delete="onDelete(index)"></environment-form>-->
+        <!--          <el-button type="text" @click="onAddEnvironment">添加环境</el-button>-->
+        <!--        </div>-->
         <el-form-item label="权限控制" prop="authorityType"
                       :rules="[{ required: true, message: '仓库权限不能为空', trigger: ['blur', 'change'] }]">
           <el-radio-group v-model="info.authorityType">
@@ -33,12 +44,12 @@
 </template>
 
 <script>
-import EnvironmentForm from './components/environment-form'
+// import EnvironmentForm from './components/environment-form'
 
 export default {
   name: 'new-workspace',
   components: {
-    EnvironmentForm
+    // EnvironmentForm
   },
   data () {
     return {
@@ -46,6 +57,7 @@ export default {
         name: '',
         description: '',
         authorityType: 'private',
+        environmentId: null,
         environments: [
           {
             name: 'java',
@@ -54,7 +66,8 @@ export default {
           }
         ]
       },
-      formRefs: []
+      formRefs: [],
+      environmentList: []
     }
   },
   methods: {
@@ -66,13 +79,13 @@ export default {
         name,
         description,
         authorityType,
-        environments
+        environmentId
       } = this.info
       this.create({
         name,
         description,
         authorityType,
-        environments
+        environmentId
       })
     },
     validate () {
@@ -122,6 +135,12 @@ export default {
     formRef () {
       return this.$refs.form
     }
+  },
+  created () {
+    this.$api.environment.list()
+      .then(({ data }) => {
+        this.environmentList = data
+      })
   }
 }
 </script>

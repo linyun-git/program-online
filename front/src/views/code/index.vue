@@ -4,7 +4,7 @@
       <code-header></code-header>
     </div>
     <div class="top-container">
-      <code-path :path-list="pathList"></code-path>
+      <code-path :path-list="pathList" :project-id="projectId"></code-path>
     </div>
     <div class="bottom-container">
       <div class="folders-container">

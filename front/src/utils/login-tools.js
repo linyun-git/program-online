@@ -11,7 +11,10 @@ export default function (loginUrl, login) {
   autoLogin(loginUrl, login)
 }
 
-// 在进行请求时自动附加token
+/**
+ * 为Axios实例添加拦截器，在每次发送请求时添加token，在收到后端返回的token时保存token
+ * @param httpInstance Axios实例
+ */
 const autoRequest = httpInstance => {
   httpInstance.interceptors.request.use(config => {
     config.headers.token = storage.getLocal('token')
@@ -28,7 +31,12 @@ const autoRequest = httpInstance => {
   })
 }
 
-// 进行一次登陆操作
+/**
+ * 进行一次登录请求
+ * @param loginUrl 请求地址
+ * @param login 收到登录响应后执行的回调
+ * @returns {Promise<never>|Promise<unknown>} 返回一个promise对象
+ */
 export const autoLogin = (loginUrl, login) => {
   const token = storage.getLocal('token')
   if (!token) {

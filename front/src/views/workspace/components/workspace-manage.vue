@@ -21,27 +21,27 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <h3>端口映射</h3>
-    <el-card class="box-card">
-      <el-form :model="info" status-icon :rules="rules" ref="form" label-width="100px">
-        <el-form-item class="port-form-item"
-                      v-for="(portRoute, index) in info.portRoutes"
-                      :label="'端口映射' + index"
-                      :key="portRoute.key"
-                      :prop="'portRoutes.' + index + '.port'"
-                      :rules="{
-      required: true, message: '端口不能为空', trigger: 'blur'
-    }"
-        >
-          <el-input v-model.number="portRoute.port"></el-input>
-          <el-button @click.prevent="removePortRoute(portRoute)">删除</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click.prevent="addPortRoute">新增端口</el-button>
-          <el-button type="primary">保存</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+<!--    <h3>端口映射</h3>-->
+<!--    <el-card class="box-card">-->
+<!--      <el-form :model="info" status-icon :rules="rules" ref="form" label-width="100px">-->
+<!--        <el-form-item class="port-form-item"-->
+<!--                      v-for="(portRoute, index) in info.portRoutes"-->
+<!--                      :label="'端口映射' + index"-->
+<!--                      :key="portRoute.key"-->
+<!--                      :prop="'portRoutes.' + index + '.port'"-->
+<!--                      :rules="{-->
+<!--      required: true, message: '端口不能为空', trigger: 'blur'-->
+<!--    }"-->
+<!--        >-->
+<!--          <el-input v-model.number="portRoute.port"></el-input>-->
+<!--          <el-button @click.prevent="removePortRoute(portRoute)">删除</el-button>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item>-->
+<!--          <el-button @click.prevent="addPortRoute">新增端口</el-button>-->
+<!--          <el-button type="primary">保存</el-button>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--    </el-card>-->
     <h3>管理</h3>
     <el-card>
       <el-form label-width="100px">
@@ -67,13 +67,13 @@ export default {
         name: null,
         description: null,
         environments: [],
-        authorityType: null,
-        portRoutes: [
-          {
-            port: null,
-            path: null
-          }
-        ]
+        authorityType: null
+        // portRoutes: [
+        //   {
+        //     port: null,
+        //     path: null
+        //   }
+        // ]
       },
       rules: {
         name: [
@@ -101,12 +101,12 @@ export default {
     }
   },
   methods: {
-    removePortRoute (item) {
-      const index = this.info.portRoutes.indexOf(item)
-      if (index !== -1) {
-        this.info.portRoutes.splice(index, 1)
-      }
-    },
+    // removePortRoute (item) {
+    //   const index = this.info.portRoutes.indexOf(item)
+    //   if (index !== -1) {
+    //     this.info.portRoutes.splice(index, 1)
+    //   }
+    // },
     addPortRoute () {
       this.info.portRoutes.push({
         port: null

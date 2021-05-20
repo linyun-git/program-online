@@ -27,9 +27,7 @@ public class WorkspaceEnvironmentRelation implements Serializable {
 
     private Integer workspaceId;
 
-    private String environmentName;
-
-    private String environmentVersion;
+    private Integer environmentId;
 
 
 }

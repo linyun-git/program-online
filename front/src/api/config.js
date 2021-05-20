@@ -84,6 +84,20 @@ export default {
         url: '/project/info/{projectId}',
         method: 'get',
         restful: true
+      },
+      createFile: {
+        url: '/project/createFile',
+        method: 'post'
+      },
+      deleteFile: {
+        url: '/project/deleteFile',
+        method: 'post'
+      }
+    },
+    environment: {
+      list: {
+        url: '/environment/list',
+        method: 'get'
       }
     }
   }

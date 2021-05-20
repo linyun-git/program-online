@@ -32,15 +32,15 @@ public class WorkspaceInfoResult {
 
     private String createDate;
 
-    private List<Environment> environments;
+    private Environment environment;
 
-    public WorkspaceInfoResult(Workspace workspace, List<Environment> environments) {
+    public WorkspaceInfoResult(Workspace workspace, Environment environment) {
         this.id = workspace.getId();
         this.name = workspace.getName();
         this.authorityType = workspace.getAuthorityType();
         this.description = workspace.getDescription();
         this.creator = workspace.getCreator();
         this.createDate = workspace.getCreateDate();
-        this.environments = environments;
+        this.environment = environment;
     }
 }
